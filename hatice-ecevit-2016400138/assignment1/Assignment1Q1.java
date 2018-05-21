@@ -1,4 +1,4 @@
-package com.company;
+
  import java.util.Arrays;
  import java.util.HashMap;
 public class Assignment1Q1 {
