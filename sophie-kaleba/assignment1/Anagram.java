@@ -1,6 +1,14 @@
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Question 1 
+ * Given two strings, determine if one is an anagram of the other.
+ * Two words are anagrams of each other if they are made of the same letters in a different order.
+ * Optional follow-ups:
+ * - make the algorithm able to handle both case sensitive and case insensitive anagrams
+ * - make the algorithm able to handle anagrams of sentences, where each word in the resulting sentence is an anagram of one of the wod in the original sentence
+ */
 public class Anagram {
 	
 	/**
@@ -74,12 +82,6 @@ public class Anagram {
 		/* compare the 2 strings */
         return Arrays.equals(word1InChar,word2InChar);
 	} 
-
-
-
-	public static void main(String[] args) {
-		System.out.println(Anagram.areAnagrams("Listen", "silent", true));
-	}
 
 
 }
