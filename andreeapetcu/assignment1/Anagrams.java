@@ -9,15 +9,7 @@
 
 public class Anagrams {
 
-    private final int difference = 'a'- 'A';
     private final String splitExpression = "\\s*[^a-zA-Z0-9]+\\s*";
-
-
-    private char caseInsensitive(char c){
-        if(Character.isUpperCase(c))
-            return (char) (c + difference );
-        return c;
-    }
 
     /**
      * Checks whether two words are anagrams of each other
@@ -29,7 +21,8 @@ public class Anagrams {
      */
     public boolean wordAnagrams(String input1, String input2, boolean caseSensitive){
         //contains count of each letter in the first word
-        int[] letters = new int[128];
+        // array size equals the number of ASCII characters
+        int[] lettersCount = new int[128];
 
         if (input1.length() != input2.length())
             return false;
@@ -41,12 +34,12 @@ public class Anagrams {
             if (caseSensitive)
                 currentLetter = input1.charAt(i);
             else
-                currentLetter = caseInsensitive(input1.charAt(i));
+                currentLetter = Character.toLowerCase(input1.charAt(i));
 
-            if (letters[currentLetter] == 0)
-                letters[currentLetter] = 1;
+            if (lettersCount[currentLetter] == 0)
+                lettersCount[currentLetter] = 1;
             else
-                letters[currentLetter]++;
+                lettersCount[currentLetter]++;
         }
 
         //iterate over the second word and decrease count of the letters
@@ -54,17 +47,17 @@ public class Anagrams {
             if (caseSensitive)
                 currentLetter = input2.charAt(i);
             else
-                currentLetter = caseInsensitive(input2.charAt(i));
+                currentLetter = Character.toLowerCase(input2.charAt(i));
 
-            letters[currentLetter]--;
-            if (letters[currentLetter] < 0)
+            lettersCount[currentLetter]--;
+            if (lettersCount[currentLetter] < 0)
                 return false;
         }
 
         //if count of letters is not zero
         //then the words are not anagrams
-        for (int i = 0; i < letters.length; i++){
-            if (letters[i] > 0)
+        for (int i = 0; i < lettersCount.length; i++){
+            if (lettersCount[i] > 0)
                 return false;
         }
 
