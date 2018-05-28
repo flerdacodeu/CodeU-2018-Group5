@@ -1,4 +1,3 @@
-package com.company;
 public class Node<T>{
         private T data;
         private com.company.Node<T> next;
