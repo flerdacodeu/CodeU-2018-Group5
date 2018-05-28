@@ -14,21 +14,17 @@ public class Anagrams {
 	public static boolean stringSensitive(String firstWord, String secondWord)
 	{
 		//we could first check if those words are the same length
-		if(firstWord.length()==secondWord.length()) 
-		{
-			Map<Character, Integer> firstMap = createCharMap(firstWord);
-			Map<Character, Integer> secondMap = createCharMap(secondWord);
+		if(firstWord.length()!=secondWord.length()) 
+			return false;
+		
+		Map<Character, Integer> firstMap = createCharMap(firstWord);
+		Map<Character, Integer> secondMap = createCharMap(secondWord);
 			
-			if(firstMap.equals(secondMap))
-				return true;
-			else
-				return false;
-		}
-		return false;
+		return(firstMap.equals(secondMap));
 	}
 	
 	//-------------------second part of the question-----------------------
-	public static boolean stringInensitive(String firstWord, String secondWord)
+	public static boolean stringInsensitive(String firstWord, String secondWord)
 	{
 		//we don't want to distinguish lower and upper case letter, so we
 		//just turn all of them to lower
@@ -56,10 +52,8 @@ public class Anagrams {
 				secondListOfMaps.add(createCharMap(secondSentenceWords[index]));
 			}
 			
-			if(firstListOfMaps.containsAll(secondListOfMaps))
-				return true;
-			else
-				return false;
+			return(firstListOfMaps.containsAll(secondListOfMaps));
+
 		}
 		return false;
 	}
