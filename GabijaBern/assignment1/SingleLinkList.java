@@ -48,19 +48,18 @@ public class SingleLinkList<Type>
 }
 
 //class for Node objects
-class Node<Type>
+class Node<T>
 {
-	public Node<Type> next;
-	private Type value;
+	public final Node<T> next;
+	private final T value;
 	
-	//constructor method
-	public Node(Type data)
+	public Node(T data)
 	{
 		this.value = data;
 	}
 	
 	//method for connecting to next node
-	public void setNext(Node<Type> nextNode)
+	public void setNext(Node<T> nextNode)
 	{
 		this.next = nextNode;
 	}
@@ -73,6 +72,5 @@ class Node<Type>
 	public void printNode()
 	{
 		System.out.println("Node value is: " + value);
-		
 	}
 }
