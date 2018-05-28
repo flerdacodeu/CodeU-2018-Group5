@@ -1,6 +1,6 @@
-public class LinkedListElement {
+public class LinkedListElement<T> {
 
-    public class LinkedListNode<T> {
+    class LinkedListNode<T> {
         LinkedListNode<T> next = null;
         public T data;
 
@@ -9,39 +9,38 @@ public class LinkedListElement {
         }
 
         /**
-         * Adds a node at the end of the linked list (used for testing method)
+         * Adds a node at the end of the linked list
          * @param value the value of the node to be appended
          */
         public void addNode (T value){
-            LinkedListNode<T> newNode = new LinkedListNode<>(value);
             LinkedListNode<T> node = this;
-
-            if (node == null)
-                node = newNode;
 
             while (node.next != null)
                 node = node.next;
 
-            node.next = newNode;
+            node.next = new LinkedListNode<>(value);
         }
     }
 
     /**
-     * Method that finds the kth to last element of a linked list
+     * Finds the kth to last element of a linked list
      *
      * @param head first element of the linked list
      * @param k position of the element starting from the end of the list
      * @return kth to last element of the list
      */
-    public LinkedListNode<Integer> kthToLastElement(LinkedListNode<Integer> head, int k){
-        LinkedListNode<Integer> normalPointer = head;
-
+    public LinkedListNode<T> kthToLastElement(LinkedListNode<T> head, int k){
+        
         if (head == null)
-            return normalPointer;
-
-        LinkedListNode<Integer> fastPointer = head.next;
-
-        // set the fast pointer to be k+1 elements in front of the normal pointer
+            return null;
+        
+        // point two elements in the list that will be k+1 elements apart
+        // such that when fastPointer is beyond the end of the list,
+        // the normalPointer will be at the k-th to last element
+        LinkedListNode<T> normalPointer = head;
+        LinkedListNode<T> fastPointer = head.next;
+        
+        // set fastPointer k+1 elements apart from nomalPointer
         while(k != 0){
             fastPointer = fastPointer.next;
             k--;
