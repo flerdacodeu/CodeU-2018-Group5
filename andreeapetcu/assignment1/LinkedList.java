@@ -51,7 +51,7 @@ public class LinkedList<T> {
     /**
      * Traverses the list
      */
-    public void traverse(){
+    public void print(){
         LinkedListNode<T> temp = head;
         while (temp != null){
             System.out.println(temp.getValue());
@@ -65,7 +65,7 @@ public class LinkedList<T> {
      * @param k position of the element starting from the end of the list
      * @return kth to last element of the list
      */
-    public LinkedList<T> kthToLastElement(int k){
+    public T kthToLastElement(int k){
         
         if (head == null)
             return null;
@@ -88,11 +88,8 @@ public class LinkedList<T> {
             normalPointer = normalPointer.next;
             fastPointer = fastPointer.next;
         }
-        
-        //return linked list that contains only the kth to last element
-        LinkedList<T> kthElement = new LinkedList<>();
-        kthElement.addAtEnd(normalPointer.getValue());
 
-        return kthElement;
+        //return the value of the element that normalPointer is at
+        return normalPointer.getValue();
     }
 }
