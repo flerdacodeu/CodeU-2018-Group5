@@ -1,4 +1,4 @@
-package com.company;
+
 public class KthToLast {
     public static void main(String[] args) {
         Node<Integer> n1 = new Node<>(3);
