@@ -1,15 +1,16 @@
+package com.company;
 public class Node<T>{
         private T data;
-        private com.company.Node<T> next;
+        private Node<T> next;
         public Node(T data){
-            this.data=data;
-            this.next=null;
+            this.data = data;
+            this.next = null;
         }
-        public Node(T data, com.company.Node<T> next){
-            this.data=data;
-            this.next=next;
+        public Node(T data, Node<T> next){
+            this.data = data;
+            this.next = next;
         }
-        public com.company.Node getNext(){
+        public Node getNext(){
             return this.next;
         }
 
@@ -17,11 +18,11 @@ public class Node<T>{
             return this.data;
         }
 
-        public void setNext(com.company.Node<T> next) {
+        public void setNext(Node<T> next) {
             this.next = next;
         }
         public void setData(T data){
-            this.data=data;
+            this.data = data;
         }
     }
 
