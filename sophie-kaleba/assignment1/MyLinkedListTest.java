@@ -1,4 +1,4 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.LinkedList;
 
@@ -38,19 +38,19 @@ public class MyLinkedListTest {
 	@Test
 	public final void testKthElementNotZero() throws IndexOutOfBoundsException, IllegalArgumentException {
 		int value = MyLinkedList.kThToLastElement(this.myList, 1);
-		assertTrue(value==4);
+		assertEquals(value,4);
 	}
 
 	@Test
 	public final void testKthElementZero() throws IndexOutOfBoundsException, IllegalArgumentException {
 		int value = MyLinkedList.kThToLastElement(this.myList, 0);
-		assertTrue(value==5);
+		assertEquals(value,5);
 	}
 
 	@Test
 	public final void testKthElementMax() throws IndexOutOfBoundsException, IllegalArgumentException {
 		int value = MyLinkedList.kThToLastElement(this.myList, 4);
-		assertTrue(value==1);
+		assertEquals(value,1);
 	}
 
 
