@@ -66,9 +66,13 @@ public class Ancestors<T> {
    *
    * @param node1 the first child node
    * @param node2 the second child node
-   * @return the first common parent
+   * @return value of the first common parent
    */
   public T commonAncestor (BinaryTreeNode<T> node1, BinaryTreeNode<T> node2) {
+    if (node1 == null || node2 == null) {
+      return null;
+    }
+    
     int depthDifference = BinaryTreeNode.getNodeDepth(node1) - BinaryTreeNode.getNodeDepth(node2);
 
     // move up the tree until the deeper node has the same depth as the shallow one
@@ -90,7 +94,9 @@ public class Ancestors<T> {
       node1 = node1.parent;
       node2 = node2.parent;
     }
-
-    return node1.value;
+    
+    // return null in the case where there is no common ancestor
+    // otherwise, return the value of the common ancestor
+    return node1 == null || node2 == null ? null : node1.value;
   }
 }
