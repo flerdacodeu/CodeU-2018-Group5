@@ -102,18 +102,14 @@ public class Main {
 
     // test 6
     // test for a nonexistent node
-    try {
-      ancestors.commonAncestor(new BinaryTreeNode<>(12), n5);
-    } catch (NullPointerException e) {
+    if (ancestors.commonAncestor(new BinaryTreeNode<>(12), n5) == null) {
       System.out.println("Test 6 passed");
       passedTests++;
     }
 
     // test 7
     // test for null node
-    try {
-      ancestors.commonAncestor(null, n5);
-    } catch (NullPointerException e) {
+    if (ancestors.commonAncestor(null, n5) == null) {
       System.out.println("Test 7 passed");
       passedTests++;
     }
