@@ -32,16 +32,18 @@ public class Ancestors<T> {
     if (tree == null) {
       return result;
     }
-
+    
+    // the node with the given value has been found
+    // indicate this by setting the flag to true
     if ((tree.value).equals(key)) {
       result.flag = true;
       return result;
     }
 
+    // add the root value to ancestors if the node is either in the left or right subtree
     if (printAncestorsAuxiliar(tree.left, key, result).flag
         || printAncestorsAuxiliar(tree.right, key, result).flag) {
       result.ancestors.add(tree.value);
-      result.flag = true;
       return result;
     }
 
@@ -55,6 +57,9 @@ public class Ancestors<T> {
    * @param key the value of the node
    */
   public void printAncestors (BinaryTreeNode<T> tree, T key) {
+    if (tree == null) {
+      return;
+    }
     ArrayList<T> ancestors = printAncestorsAuxiliar(tree, key, new Result()).ancestors;
     for (T i : ancestors){
       System.out.println(i);
