@@ -1,4 +1,4 @@
-
+package com.company;
 public class KthToLast {
     public static void main(String[] args) {
         Node<Integer> n1 = new Node<>(3);
@@ -8,13 +8,12 @@ public class KthToLast {
         Node<Integer> n5 = new Node<>(5, n4);
         Node<Integer> n6 = new Node<>(2, n5);
         Node<Integer> n7 = new Node<>(0, n6);
-
         System.out.println(kthToLastElement(n7, 3).getData());
 
     }
 
     /**
-     * @param head:head of the given linked list
+     * @param head head of the given linked list
      * @param k the index (from the end of the list) of the element to be returned
      * @return the node corresponding to the k-th to last element of the list or null if the list is empty
      */

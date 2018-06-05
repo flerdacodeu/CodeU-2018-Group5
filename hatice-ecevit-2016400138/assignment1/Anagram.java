@@ -1,4 +1,4 @@
-
+package com.company;
  import java.util.Arrays;
  import java.util.HashMap;
 public class Anagram {
@@ -8,6 +8,7 @@ public class Anagram {
         System.out.println(areAnagrams("listen","Silent",false));
         System.out.println(areAnagramSentences("hi there hello","iH tHree lloeh",false));
         System.out.println(areAnagramSentences("a a", "a b", false));
+        System.out.println(areAnagramSentences("a b b c", "a b c c", false));
     }
 
     /**
@@ -63,6 +64,8 @@ public class Anagram {
     public static boolean areAnagramSentences(String s1,String s2, boolean caseSensitive){
         String[] words1 = s1.split("\\s+");
         String[] words2 = s2.split("\\s+");
+        Boolean[] isMatched1 = new Boolean[words1.length];
+        Boolean[] isMatched2 = new Boolean[words2.length];
         if (words1.length != words2.length) {
             return false;
         }
@@ -71,12 +74,18 @@ public class Anagram {
             boolean[] anagram2 = new boolean[words2.length];
             Arrays.fill(anagram1,Boolean.FALSE);
             Arrays.fill(anagram2,Boolean.FALSE);
+            Arrays.fill(isMatched1,Boolean.FALSE);
+            Arrays.fill(isMatched2,Boolean.FALSE);
             for (int i = 0;i<words1.length;i++) {
                 for (int j = 0;j<words2.length;j++) {
-                    if (areAnagrams(words1[i],words2[j],caseSensitive))
+                    if (areAnagrams(words1[i],words2[j],caseSensitive) && isMatched2[j] == false) {
                         anagram1[i] = true;
-                    if (areAnagrams(words2[i],words1[j], caseSensitive))
+                        isMatched2[j] = true;
+                    }
+                    if (areAnagrams(words2[i],words1[j], caseSensitive) && isMatched1[j] == false) {
                         anagram2[i] = true;
+                        isMatched1[j] = true;
+                    }
                 }
                 if(anagram1[i] == false)
                     return false;
