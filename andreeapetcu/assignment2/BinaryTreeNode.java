@@ -1,14 +1,16 @@
 public class BinaryTreeNode<T> {
-  public T value;
-  public BinaryTreeNode<T> left, right, parent;
+  private T value;
+  private BinaryTreeNode<T> left, right, parent;
 
   public BinaryTreeNode(T value) {
+    assert (value != null) : "The value of the node should not be null";
     this.value = value;
     left = null;
     right = null;
   }
 
   public BinaryTreeNode(T value, BinaryTreeNode<T> left, BinaryTreeNode<T> right) {
+    assert (value != null) : "The value of the node should not be null";
     this.value = value;
     this.left = left;
     this.right = right;
@@ -77,5 +79,37 @@ public class BinaryTreeNode<T> {
       depth++;
     }
     return depth;
+  }
+      
+  public T getValue() {
+    return value;
+  }
+  
+  public void setValue(T value) {
+    this.value = value;
+  }
+
+  public BinaryTreeNode<T> getLeft() {
+    return left;
+  }
+  
+  public void setLeft(BinaryTreeNode<T> left) {
+    this.left = left;
+  }
+
+  public BinaryTreeNode<T> getRight() {
+    return right;
+  }
+  
+  public void setRight(BinaryTreeNode<T> right) {
+    this.right = right;
+  }
+
+  public BinaryTreeNode<T> getParent() {
+    return parent;
+  }
+  
+  public void setParent(BinaryTreeNode<T> parent) {
+    this.parent = parent;
   }
 }
