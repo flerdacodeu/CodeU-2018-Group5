@@ -60,7 +60,11 @@ public class Ancestors<T> {
     if (tree == null) {
       return;
     }
-    ArrayList<T> ancestors = findAncestors(tree, key, new Result()).ancestors;
+    Result result = findAncestors(tree, key, new Result());
+    if (result == null) {
+      return;
+    }
+    ArrayList<T> ancestors = result.ancestors;
     for (T i : ancestors){
       System.out.println(i);
     }
