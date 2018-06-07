@@ -7,16 +7,16 @@ import java.util.ArrayList;
 public class Ancestors<T> {
 
   /**
-   * Wraper class that contains the ancestors of a node and a flag for the existence of a node
+   * Wrapper class that contains the ancestors of a node and a flag for the existence of a node
    * with the given key.
    */
-  class Result {
-    public ArrayList<T> ancestors;
-    public boolean flag;
+  static class Result {
+    public ArrayList ancestors;
+    public boolean valueFound;
 
     public Result () {
       this.ancestors = new ArrayList<>();
-      this.flag = false;
+      this.valueFound = false;
     }
   }
 
@@ -25,25 +25,25 @@ public class Ancestors<T> {
    *
    * @param tree the root of the binary tree
    * @param key the value of the node whose ancestors are to be printed
-   * @param result wraper class that contains the ancestors and flag for existence of the key
-   * @return wraper class with ancestors of the given key
+   * @param result wrapper class that contains the ancestors and flag for existence of the key
+   * @return wrapper class with ancestors of the given key
    */
-  protected Result printAncestorsAuxiliar(BinaryTreeNode<T> tree, T key, Result result) {
+  protected Result findAncestors(BinaryTreeNode<T> tree, T key, Result result) {
     if (tree == null) {
       return result;
     }
     
     // the node with the given value has been found
     // indicate this by setting the flag to true
-    if ((tree.value).equals(key)) {
-      result.flag = true;
+    if (tree.getValue().equals(key)) {
+      result.valueFound = true;
       return result;
     }
 
     // add the root value to ancestors if the node is either in the left or right subtree
-    if (printAncestorsAuxiliar(tree.left, key, result).flag
-        || printAncestorsAuxiliar(tree.right, key, result).flag) {
-      result.ancestors.add(tree.value);
+    if (findAncestors(tree.getLeft(), key, result).valueFound
+        || findAncestors(tree.getRight(), key, result).valueFound) {
+      result.ancestors.add(tree.getValue());
       return result;
     }
 
@@ -60,7 +60,7 @@ public class Ancestors<T> {
     if (tree == null) {
       return;
     }
-    ArrayList<T> ancestors = printAncestorsAuxiliar(tree, key, new Result()).ancestors;
+    ArrayList<T> ancestors = findAncestors(tree, key, new Result()).ancestors;
     for (T i : ancestors){
       System.out.println(i);
     }
@@ -82,26 +82,37 @@ public class Ancestors<T> {
 
     // move up the tree until the deeper node has the same depth as the shallow one
     if (depthDifference > 0) {
-      while (depthDifference != 0) {
-        node1 = node1.parent;
-        depthDifference--;
-      }
+      // if node1 has greater depth, move it up by depthDifference
+      node1 = moveUp(node1, depthDifference);
     } else if (depthDifference < 0) {
-      while (depthDifference != 0) {
-        node2 = node2.parent;
-        depthDifference++;
-      }
+      // else move node2 up by depthDifference
+      node2 = moveUp(node2, Math.abs(depthDifference));
     }
 
     // move up the tree until the nodes intersect
     // the node of intersection is the common ancestor
     while (node1 != node2 && node1 != null && node2 != null) {
-      node1 = node1.parent;
-      node2 = node2.parent;
+      node1 = node1.getParent();
+      node2 = node2.getParent();
     }
     
     // return null in the case where there is no common ancestor
     // otherwise, return the value of the common ancestor
-    return node1 == null || node2 == null ? null : node1.value;
+    return node1 == null || node2 == null ? null : node1.getValue();
+  }
+  
+    /**
+   * Moves the deeper node up by a specified number of times
+   * 
+   * @param node the node to be moved up the tree
+   * @param moveUpBy the number of times the node is moved up
+   * @return the modified node
+   */
+  private BinaryTreeNode<T> moveUp (BinaryTreeNode<T> node, int moveUpBy) {
+    while (moveUpBy != 0) {
+      node = node.getParent();
+      moveUpBy--;
+    }
+    return node;
   }
 }
