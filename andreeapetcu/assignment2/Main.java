@@ -31,27 +31,27 @@ public class Main {
     BinaryTreeNode<Integer> n7 = new BinaryTreeNode<>(7);
     BinaryTreeNode<Integer> n8 = new BinaryTreeNode<>(8);
 
-    n1.parent = n2;
-    n6.parent = n2;
-    n2.parent = n3;
-    n5.parent = n3;
-    n3.parent = n7;
-    n8.parent = n4;
-    n4.parent = n7;
+    n1.setParent(n2);
+    n6.setParent(n2);
+    n2.setParent(n3);
+    n5.setParent(n3);
+    n3.setParent(n7);
+    n8.setParent(n4);
+    n4.setParent(n7);
 
-    n7.left = n3;
-    n7.right = n4;
-    n3.left = n2;
-    n3.right = n5;
-    n4.right = n8;
-    n2.left = n1;
-    n2.right = n6;
+    n7.setLeft(n3);
+    n7.setRight(n4);
+    n3.setLeft(n2);
+    n3.setRight(n5);
+    n4.setRight(n8);
+    n2.setLeft(n1);
+    n2.setRight(n6);
 
     BinaryTreeNode<Integer> root = n7;
 
     // test 1
     // test for random node in the tree
-    Ancestors.Result test1 = ancestors.printAncestorsAuxiliar(root, 6, ancestors.new Result());
+    Ancestors.Result test1 = ancestors.findAncestors(root, 6, new Ancestors.Result());
     ArrayList<Integer> result1 = test1.ancestors;
     Integer[] expectedResult1 = {2,3,7};
     if (equal(result1, expectedResult1)) {
@@ -62,9 +62,9 @@ public class Main {
 
     // test 2
     // test for ancestors of root node
-    Ancestors.Result test2 = ancestors.printAncestorsAuxiliar(root, 7, ancestors.new Result());
+    Ancestors.Result test2 = ancestors.findAncestors(root, 7, new Ancestors.Result());
     ArrayList<Integer> result2 = test2.ancestors;
-    if (result2.isEmpty() && test2.flag) {
+    if (result2.isEmpty() && test2.valueFound) {
       System.out.println("Test 2 passed");
       passedTests++;
     }
@@ -72,9 +72,9 @@ public class Main {
 
     // test 3
     // test for nonexistent key in tree
-    Ancestors.Result test3 = ancestors.printAncestorsAuxiliar(root, 11, ancestors.new Result());
+    Ancestors.Result test3 = ancestors.findAncestors(root, 11, new Ancestors.Result());
     ArrayList<Integer> result3 = test3.ancestors;
-    if (result3.isEmpty() && !test3.flag) {
+    if (result3.isEmpty() && !test3.valueFound) {
       System.out.println("Test 3 passed");
       passedTests++;
     }
@@ -82,9 +82,9 @@ public class Main {
 
     // test 4
     // test for null tree
-    Ancestors.Result test4 = ancestors.printAncestorsAuxiliar(null, 6, ancestors.new Result());
+    Ancestors.Result test4 = ancestors.findAncestors(null, 6, new Ancestors.Result());
     ArrayList<Integer> result4 = test4.ancestors;
-    if (result4.isEmpty() && !test4.flag) {
+    if (result4.isEmpty() && !test4.valueFound) {
       System.out.println("Test 4 passed");
       passedTests++;
     }
