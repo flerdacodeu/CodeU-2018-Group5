@@ -1,10 +1,15 @@
-//Q2 Implement an algorithm to find the kth to last element of a singly linked list
-public class SingleLinkList<Type> 
+package Task1;
+/*SingleLinkList class for implement an algorithm to find the kth to last element of a singly linked list
+ * 
+ */
+public class SingleLinkList<T> 
 {
-	private Node<Type> head = null;
+	private Node<T> head = null;
 	int numberOfNodes=0;
 	
-	//testing the program
+	/* main method for testing the program
+	 * 
+	 */
 	public static void main(String[] args)
 	{
 		SingleLinkList<String> test1 = new SingleLinkList<String>();
@@ -20,21 +25,29 @@ public class SingleLinkList<Type>
 		nodeTest.printNode();
 	}
 	
-	//method for adding nodes in front of the list
-	public void addAtHead(Node<Type> newHead)
+	/* addHead method for adding nodes in front of the list
+	 * @param newHead given Node reference, this node is "put" in front of the list
+	 */
+	public void addAtHead(Node<T> newHead)
 	{
 		newHead.setNext(head);
 		head = newHead;
 	}
 	
-	//recursive method for getting the element from the back
-	//we go to the end of the list and then "move" back
-	//and check if the index we are looking matches the numberOfNodes
-	//which is a variable that we increment as we go back to the 
-	//beginning of the list
-	public Node<Type> getTheElementFromEnd(Node<Type> head, int index)
+	/* getTheElementFromEnd recursive method for getting the element from the back
+	*we go to the end of the list and then "move" back
+	*and check if the index we are looking matches the numberOfNodes
+	*which is a variable that we increment as we go back to the 
+	*beginning of the list
+	*
+	*@param head the head of the linkedlist from which the element should be returned
+	*@param index indicates the kth index from the back of the list that we want to return
+	*
+	*@return Node<T> method returns the kth element from the back of the list
+	*/
+	public Node<T> getTheElementFromEnd(Node<T> head, int index)
 	{
-		Node<Type> resultNode = null;
+		Node<T> resultNode = null;
 		
 		if(head!=null)
 		{
@@ -45,32 +58,5 @@ public class SingleLinkList<Type>
 		}
 		return resultNode;
 	}
-}
 
-//class for Node objects
-class Node<T>
-{
-	public final Node<T> next;
-	private final T value;
-	
-	public Node(T data)
-	{
-		this.value = data;
-	}
-	
-	//method for connecting to next node
-	public void setNext(Node<T> nextNode)
-	{
-		this.next = nextNode;
-	}
-	
-	public Type getValue()
-	{
-		return value;
-	}
-	
-	public void printNode()
-	{
-		System.out.println("Node value is: " + value);
-	}
 }
