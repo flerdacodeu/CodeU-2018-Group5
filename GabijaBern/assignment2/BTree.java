@@ -13,9 +13,11 @@ public class BTree<T>
 	
 	/*
 	 * Method for filling levels of tree
-	 * we keep a queue of nodes that don't have two children yet, every time we add a node
-	 * we add it to the end of the queue and make it a child of a first node in a queue
-	 * once the node in front has to children, we remove the node from the list
+	 * 
+	 * this method search for an empty position to insert a node level-by-level
+	 * we scan level by level till we find a node with one of the child is null
+	 * we check if left or/then right child is empty and if yes -> we set the node
+	 * if not -> we add that node to the queue for later processing
 	 * 
 	 * @param tree The tree into which we want to insert a new node
 	 * @param valueToInsert The value that we want to insert
