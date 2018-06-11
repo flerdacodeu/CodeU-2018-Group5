@@ -42,24 +42,26 @@ public class Anagram {
 	 * @return true if the 2 sentences are anagrams, false otherwise
 	 */
 	public static boolean AreAnagramsSentences(String[] sentence1, String[] sentence2, boolean caseSensitive) {
+		System.out.println("\nstart");
 
 		/* must contains the same amount of words to be anagrams */
-		if (sentence1.length == sentence2.length) {
-			for (String word : sentence1) {
-				boolean found = false;
-				for (String word2 : sentence2) {
-					if (AreAnagramsWords(word, word2, caseSensitive)){
-						found = true;
-						break;
-					}
-				}
-				if (!found) {
-					return false;
+		if (sentence1.length != sentence2.length) {
+			return false;
+		}
+
+		for (String word : sentence1) {
+			boolean found = false;
+			for (String word2 : sentence2) {
+				if (AreAnagramsWords(word, word2, caseSensitive)){
+					found = true;
+					break;
 				}
 			}
-			return true;
+			if (!found) {
+				return false;
+			}
 		}
-		return false;
+		return true;
 	}
 
 

@@ -32,8 +32,15 @@ public class AnagramTest {
 	}
 
 	@Test
-	public final void testAnagramSentencesNotOK() {
+	public final void testAnagramSentencesDifferent() {
+		System.out.println("\ndifferent");
 		assertFalse(Anagram.areAnagrams("good morning sunshine", "sshinune doog boring", false));
+	}
+	
+	@Test
+	public final void testAnagramSentencesWrongMatch() {
+		System.out.println("\nmatch");
+		assertFalse(Anagram.areAnagrams("a b b c", "a b c c", false));
 	}
 
 }
