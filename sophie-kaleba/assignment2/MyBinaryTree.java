@@ -65,6 +65,7 @@ public class MyBinaryTree {
 	 * as "value -> all node up to the root"
 	 * @param tree - the given tree
 	 * @param value - the starting node
+	 * @param ancestors - the list of ancestors of the node
 	 * @return true if the node is ancestor of the starting node, false otherwise
 	 * @throws BinaryTreeException - when the tree is empty or the value is not found
 	 */

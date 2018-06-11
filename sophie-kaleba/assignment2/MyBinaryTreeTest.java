@@ -44,12 +44,28 @@ public class MyBinaryTreeTest {
 	}
 
 	@Test
-	public final void findAncestor() throws BinaryTreeException {
+	public final void findAncestor() {
 		MyBinaryTree.addNode(this.tree, new MyBinaryTree(5));
 		MyBinaryTree.addNode(this.tree, new MyBinaryTree(1));
 		MyBinaryTree.addNode(this.tree, new MyBinaryTree(6));
 
 		assertEquals(MyBinaryTree.lowestCommonAncestor(this.tree, 6, 5), 7);
+	}
+	
+	@Test
+	/**
+	 *                        7
+	 *                      /  \
+	 *                     3    4
+	 *                    / \  / \ 
+	 *                   2  5  1  3
+	 */
+	public final void findAncestorDuplicateValues() {
+		MyBinaryTree.addNode(this.tree, new MyBinaryTree(5));
+		MyBinaryTree.addNode(this.tree, new MyBinaryTree(1));
+		MyBinaryTree.addNode(this.tree, new MyBinaryTree(3));
+
+		assertEquals(MyBinaryTree.lowestCommonAncestor(this.tree, 3, 4), 7);
 	}
 
 
