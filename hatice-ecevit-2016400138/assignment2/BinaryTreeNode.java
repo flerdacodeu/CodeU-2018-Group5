@@ -35,6 +35,7 @@ public class BinaryTreeNode<T> {
     }
 
     /**
+     * If the given key is repeated in the tree, this method will consider the one which is upper and the most left one.
      * @param key key of the node whose ancestors are going to be printed
      * @return ancestor list of key
      */
@@ -83,6 +84,7 @@ public class BinaryTreeNode<T> {
     }
 
     /**
+     * Complexity of this method is O(N) in the worst case because each node in the tree is visited only once.
      * @param root is the root of the tree that is been traversed
      * @param node1 is the first node
      * @param node2 is the second node
