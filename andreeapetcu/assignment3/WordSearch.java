@@ -23,10 +23,11 @@ public class WordSearch {
    * @param grid the grid where the words are searched for
    * @param dict the dictionary that contains valid words
    * @return a set of words from the dictionary that were found in the grid
+   * @throws IllegalArgumentException if the given grid or the dictionary are null
    */
   public Set<String> wordSearch (char[][] grid, Dictionary dict) {
     if (grid == null || dict == null) {
-      return null;
+      throw new IllegalArgumentException("null grid or dictionary");
     }
     int numerRows = grid.length;
     int numberColumns = grid[0].length;
@@ -53,10 +54,9 @@ public class WordSearch {
    * @param numberColumns the number of columns in the original grid
    * @return a new grid of trie nodes
    */
-  private TrieNode[][] createTrieGrid(char[][] grid, int numberRows, int numberColumns) {
-    if (numberRows < 0 || numberColumns < 0 || grid == null) {
-      return null;
-    }
+  TrieNode[][] createTrieGrid(char[][] grid, int numberRows, int numberColumns) {
+    assert grid != null && numberRows > 0 && numberColumns > 0;
+    
     TrieNode[][] newGrid = new TrieNode[numberRows][numberColumns];
     for (int row = 0; row < numberRows; row++) {
       for (int column = 0; column < numberColumns; column++) {
@@ -76,10 +76,9 @@ public class WordSearch {
    * @param visited agenda of elements that exist in a word
    * @param words the list of valid words that the algorithm finds
    */
-  private void depthFirstTraversal (TrieNode node, TrieNode[][] grid, Dictionary dict, boolean[][] visited, ArrayList<String> words) {
-    if (node == null || grid == null || dict == null) {
-      return;
-    }
+  void depthFirstTraversal (TrieNode node, TrieNode[][] grid, Dictionary dict, boolean[][] visited, ArrayList<String> words) {
+    assert node != null && grid != null && dict != null && visited != null && words != null;
+   
     LinkedList<TrieNode> neighbours = getNeighbours(node.getRow(), node.getColumn(), grid);
     for (TrieNode neighbour : neighbours) {
       if (!visited[neighbour.getRow()][neighbour.getColumn()]) {
@@ -112,7 +111,8 @@ public class WordSearch {
    * @param columnBoundary the number of columns in a grid
    * @return true if the element has valid indexes within the grid, false otherwise
    */
-  private boolean isWithinBoundaries (int row, int column, int rowBoundary, int columnBoundary) {
+  boolean isWithinBoundaries (int row, int column, int rowBoundary, int columnBoundary) {
+    assert rowBoundary > 0 && columnBoundary > 0;
     if (row >= rowBoundary || column >= columnBoundary || row < 0 || column < 0) {
       return false;
     }
@@ -127,11 +127,9 @@ public class WordSearch {
    * @param grid the grid that contains the elements
    * @return the neighbours of the element
    */
-  private LinkedList<TrieNode> getNeighbours(int row, int column, TrieNode[][] grid) {
-    if (row < 0 || column < 0) {
-      return null;
-    }
-
+  LinkedList<TrieNode> getNeighbours(int row, int column, TrieNode[][] grid) {
+    assert row >= 0 && column >= 0 && grid != null;
+    
     int numerRows = grid.length;
     int numberColumns = grid[0].length;
 
@@ -156,7 +154,9 @@ public class WordSearch {
    * @param node the current node
    * @return the prefix up to the current node
    */
-  private String getStringFromRootToNode(TrieNode node) {
+  String getStringFromRootToNode(TrieNode node) {
+    assert node != null;
+    
     StringBuilder prefix = new StringBuilder();
     while (node != null) {
       prefix.insert(0,node.getValue());
