@@ -2,8 +2,10 @@ public class Main {
 
   public static void main (String[] args) {
     TestWordSearch testWordSearch = new TestWordSearch();
-    testWordSearch.setUp();
+    testWordSearch.generalSetUp();
 
+    testWordSearch.setUp1();
+    
     testWordSearch.testGetNeighbours_normalCaseCornerElementPasses();
     testWordSearch.testGetNeighbours_normalCaseMiddleElementPasses();
     testWordSearch.testGetNeighbours_negativeRowOrColumnFails();
@@ -33,6 +35,9 @@ public class Main {
     testWordSearch.testWordSearch_nullDictionaryFails();
     testWordSearch.testWordSearch_emptyDictionaryPasses();
     testWordSearch.testWordSearch_nullGridFails();
-    testWordSearch.testWordSearch_validInputPasses();
+    testWordSearch.testWordSearch_validInputPassesSetUp1();
+    
+    testWordSearch.setUp2();
+    testWordSearch.testWordSearch_validInputPassesSetUp2();
   }
 }
