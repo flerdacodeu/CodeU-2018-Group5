@@ -81,10 +81,21 @@ public class TestWordSearch {
     return true;
   }
 
-  // general setup
-  void setUp() {
+    // general setup
+  void generalSetUp() {
     wordSearch = new WordSearch();
 
+    nullTrieNode = null;
+
+    nullGrid = null;
+    nullTrieGrid = null;
+    nullDict = null;
+
+    emptyListOfDictionaryWords = new LinkedList<>();
+    emptyDict = new Dictionary(emptyListOfDictionaryWords);
+  }
+  
+  void setUp1() {
     validGrid = new char[][]{{'a','a','r'}, {'t','c','d'} };
     validTrieGrid = new TrieNode[][]{{new TrieNode('a', 0, 0), new TrieNode('a', 0, 1), new TrieNode('r', 0, 2)},
         {new TrieNode('t', 1, 0), new TrieNode('c', 1, 1), new TrieNode('d', 1, 2)}};
@@ -97,15 +108,27 @@ public class TestWordSearch {
     validListOfWords.add("cat");
     validDict = new Dictionary(validListOfWords);
 
-    nullGrid = null;
-    nullTrieGrid = null;
-    nullDict = null;
-
-    emptyListOfDictionaryWords = new LinkedList<>();
-    emptyDict = new Dictionary(emptyListOfDictionaryWords);
-
     validTrieNode = new TrieNode('c', 1,1);
-    nullTrieNode = null;
+  }
+  
+  void setUp2() {
+    validGrid = new char[][]{{'l','m','a','p'}, {'o','o','x', 'a'}, {'d', 'r', 'v', 'r'}, {'q', 'e', 'x', 'e'}};
+    validTrieGrid = new TrieNode[][]{{new TrieNode('l', 0, 0), new TrieNode('m', 0, 1), new TrieNode('a', 0, 2), new TrieNode('p',0,3)},
+        {new TrieNode('o', 1, 0), new TrieNode('o', 1, 1), new TrieNode('x', 1, 2), new TrieNode('a',1,3)},
+        {new TrieNode('d', 0, 0), new TrieNode('r', 0, 1), new TrieNode('v', 0, 2), new TrieNode('r',0,3)},
+        {new TrieNode('q', 0, 0), new TrieNode('e', 0, 1), new TrieNode('x', 0, 2), new TrieNode('e',0,3)}};
+    numberRowsGrid = validGrid.length;
+    numberColumnsGrid = validGrid[0].length;
+    validListOfWords = new LinkedList<>();
+    validListOfWords.add("love");
+    validListOfWords.add("more");
+    validListOfWords.add("mood");
+    validListOfWords.add("mode");
+    validListOfWords.add("map");
+    validListOfWords.add("ever");
+    validListOfWords.add("drop");
+    validListOfWords.add("remap");
+    validDict = new Dictionary(validListOfWords);
   }
 
   // additional setup for depthFirstTraversal method
@@ -345,16 +368,39 @@ public class TestWordSearch {
     assert wordSearch.wordSearch(validGrid, emptyDict).isEmpty();
   }
 
-  void testWordSearch_validInputPasses() {
+  void testWordSearch_validInputPassesSetUp1() {
     boolean equalSets = true;
     Set<String> words = wordSearch.wordSearch(validGrid, validDict);
     Set<String> expectedWords = new HashSet<>();
     expectedWords.add("car");
     expectedWords.add("cat");
     expectedWords.add("card");
+    
+    assert words.size() == expectedWords.size();
 
+    LinkedList<String> wordsList = new LinkedList<>(words);
     for (String expectedWord : expectedWords) {
-      equalSets = equalSets && containsWord(new LinkedList<>(words), expectedWord);
+      equalSets = equalSets && containsWord(wordsList, expectedWord);
+    }
+    assert equalSets;
+  }
+  
+    void testWordSearch_validInputPassesSetUp2() {
+    boolean equalSets = true;
+    Set<String> words = wordSearch.wordSearch(validGrid, validDict);
+    Set<String> expectedWords = new HashSet<>();
+    expectedWords.add("love");
+    expectedWords.add("more");
+    expectedWords.add("mood");
+    expectedWords.add("mode");
+    expectedWords.add("map");
+    expectedWords.add("ever");
+
+    assert words.size() == expectedWords.size();  
+    
+    LinkedList<String> wordsList = new LinkedList<>(words);
+    for (String expectedWord : expectedWords) {
+      equalSets = equalSets && containsWord(wordsList, expectedWord);
     }
     assert equalSets;
   }
