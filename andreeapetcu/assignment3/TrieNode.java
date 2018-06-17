@@ -30,11 +30,13 @@ public class TrieNode {
   }
 
   public TrieNode (char value) {
+    assert value >= 'a' && value <= 'z';
     this.value = value;
     children = new ArrayList[LETTERS];
   }
 
   public TrieNode (char value, int row, int column) {
+    assert value >= 'a' && value <= 'z' && row >= 0 && column >= 0;
     this.value = value;
     this.row = row;
     this.column = column;
@@ -45,9 +47,14 @@ public class TrieNode {
    * Adds a new word into the trie.
    *
    * @param word the word to be added
+   * @throws IllegalArgumentException if the word to be inserted is null
    */
   public void insertWord (String word) {
-    if (word == null || word.isEmpty()) {
+    if (word == null) {
+      throw new IllegalArgumentException("null input");
+    }
+    
+    if (word.isEmpty()) {
       return;
     }
 
@@ -70,10 +77,11 @@ public class TrieNode {
    *
    * @param word the word whose existence in trie is checked
    * @return true if the trie contains the word, false otherwise
+   * @throws IllegalArgumentException if the element to be searched for is null
    */
   public boolean containsWord (String word) {
     if (word == null) {
-      return false;
+      throw new IllegalArgumentException("null input");
     }
 
     if (word.length() > 0) {
@@ -94,10 +102,11 @@ public class TrieNode {
    *
    * @param prefix the prefix whose existence in trie is checked
    * @return true if the trie contains the prefix, false otherwise
+   * @throws IllegalArgumentException if the element to be searched for is null
    */
   public boolean containsPrefix (String prefix) {
     if (prefix == null) {
-      return false;
+      throw new IllegalArgumentException("null input");
     }
 
     if (prefix.length() > 0) {
@@ -117,10 +126,11 @@ public class TrieNode {
    * Adds a child node to the current trie node.
    *
    * @param node the child node to be added
+   * @throws IllegalArgumentException if the node to be added is null
    */
   public void addChild (TrieNode node) {
     if (node == null) {
-      return;
+      throw new IllegalArgumentException("Null node");
     }
     node.parent = this;
     ArrayList<TrieNode> childrenWithSameValue = children[getIndexOfCharacter(node.getValue())];
@@ -141,6 +151,8 @@ public class TrieNode {
    * @return true if a node with identical position exists, false otherwise
    */
   private boolean exists (ArrayList<TrieNode> childrenWithSameValue) {
+    assert childrenWithSameValue != null;
+    
     for (TrieNode n : childrenWithSameValue) {
       if (n.getRow() == getRow() && n.getColumn() == getColumn()) {
         return true;
