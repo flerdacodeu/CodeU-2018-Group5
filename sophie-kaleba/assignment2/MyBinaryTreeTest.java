@@ -54,6 +54,8 @@ public class MyBinaryTreeTest {
 	
 	@Test
 	/**
+	 * When there are duplicates, the priority is given to the leftest, 
+	 * highest (ie closer to the root) node
 	 *                        7
 	 *                      /  \
 	 *                     3    4

@@ -6,7 +6,8 @@ import java.util.Queue;
 /**
  * assumptions : 
  * The tree is not necessarily full nor balanced
- * There can be duplicated nodes
+ * There can be duplicated nodes. 
+ * In case of duplicates, the leftest, closest to the root duplicate node is picked
  */
 public class MyBinaryTree {
 
