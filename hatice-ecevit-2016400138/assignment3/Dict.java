@@ -1,7 +1,7 @@
 import java.util.HashMap;
 
 public class Dict {
-    public HashMap<Character,DictNode> letters = new HashMap<Character, DictNode>();
+    private HashMap<Character,DictNode> letters = new HashMap<Character, DictNode>();
 
     public void insertWord (String s){
         if (!letters.containsKey(s.charAt(0))){
@@ -18,15 +18,12 @@ public class Dict {
      * @param node is the current node in the dictionary tree.
      */
     private void insertWord (String s, DictNode node) {
-        if (node.getChildren().containsKey(s.charAt(0))) {
-            node = node.getChildren().get(s.charAt(0));
+        DictNode nextChild = node.getChildren().get(s.charAt(0));
+        if (nextChild == null) {
+            nextChild = new DictNode();
+            node.children.put(s.charAt(0),nextChild);
         }
-        else {
-            DictNode next = new DictNode();
-            node.children.put(s.charAt(0),next);
-            node = node.children.get(s.charAt(0));
-        }
-
+        node = nextChild;
         if (s.length() == 1) {
             node.setLastCharacter(true);
             return;
