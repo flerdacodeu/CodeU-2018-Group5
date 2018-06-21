@@ -201,29 +201,40 @@ public class Grid {
 	public void wordSearchAux(List<String> dictionary, int row, int column, List<String> foundWords, int startRow, int startColumn) {
 
 		this.mark(row, column);
+		System.out.println("Marking "+row+","+column);
 		this.currentWord += this.getCharAt(row, column);
-		System.out.println(row+" "+column);
+		System.out.println("Current word is: "+this.currentWord);
 		
+		System.out.println("Looking for "+row+","+column+" neigbours");
 		List<int[]> neigbours = this.allReachableNeighbours(row, column);
 		for (int[] coordAux : neigbours) {
 			int rowAux = coordAux[0];
 			int columnAux = coordAux[1];
+			System.out.println("Current neighbour is: "+rowAux+","+columnAux);
 			
 			if (!this.isMarked(rowAux, columnAux)) {
 				
 				String potentialWord = this.currentWord+this.getCharAt(rowAux, columnAux);
-				System.out.println(potentialWord);
 				if (Grid.isPrefix(dictionary, potentialWord)) {
 					if (Grid.isWord(dictionary, potentialWord)) {
 						foundWords.add(potentialWord);
+						System.out.println("adding: "+potentialWord);
 					}
 
 					this.wordSearchAux(dictionary, rowAux, columnAux, foundWords, startRow, startColumn);
 				}
 				else {
+					System.out.println("Unmarking "+rowAux+","+columnAux);
 					this.unmark(rowAux, columnAux);
+					if (this.currentWord.length() >= 2) {
+						this.currentWord = this.currentWord.substring(0, this.currentWord.length()-2);
+						System.out.println("and tweaking current Word "+this.currentWord);
+					}
 				}
 				
+			}
+			else {
+				System.out.println(rowAux+","+columnAux+" was already marked");
 			}
 		}
 	}
@@ -256,6 +267,7 @@ public class Grid {
 
 		for (int i = 0; i<this.content.size() ; i++) {
 			for (int j = 0; j < this.width ; j ++) {
+				System.out.println("========================================================================");
 				System.out.println("START "+i+" "+j);
 				this.resetMarkedContent();
 				this.currentWord = ""; 
@@ -313,5 +325,9 @@ public class Grid {
 	
 	public List<String[]> getContent() {
 		return this.content;
+	}
+	
+	public List<int[]> getMarked() {
+		return this.markedContent;
 	}
 }

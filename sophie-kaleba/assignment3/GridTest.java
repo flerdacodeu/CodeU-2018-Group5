@@ -48,7 +48,7 @@ public class GridTest {
 	}
 	
 	@Test
-	public final void testNeigbours() {
+	public final void testNeighbours() {
 		List<int[]> expectedResult = new ArrayList<int[]>();
 		expectedResult.add(new int[]{1 , 0});
 		expectedResult.add(new int[]{1 , 1});
@@ -59,7 +59,20 @@ public class GridTest {
 		assertEquals(expectedResult.size(), actualResult.size());
 		for (int i = 0; i < size ; i++) {
 			assertArrayEquals(expectedResult.get(i), actualResult.get(i));
-			
+		}
+	}
+	
+	
+	@Test
+	public final void testResetMarked() {
+		List<int[]> expectedResult = new ArrayList<int[]>();
+		expectedResult.add(new int[]{0, 0, 0});
+		expectedResult.add(new int[]{0, 0, 0});
+		this.testGrid.wordSearch(this.testDictionary);
+		assertEquals(expectedResult.size(), this.testGrid.getMarked().size());
+		this.testGrid.resetMarkedContent();
+		for (int i = 0; i < expectedResult.size() ; i++) {
+			assertArrayEquals(expectedResult.get(i), this.testGrid.getMarked().get(i));
 		}
 		
 	}
