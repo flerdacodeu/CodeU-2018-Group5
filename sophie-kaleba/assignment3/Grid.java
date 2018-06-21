@@ -19,8 +19,8 @@ import java.util.Set;
 public class Grid {
 
 	private List<String[]> content;
-	private List<int[]> markedContent;
-	private int width;
+	private List<int[]> markedContent; /* tells if a grid element has been visited */
+	private int width; /* number of columns in the grid */
 	private String currentWord;
 
 	/**
@@ -37,32 +37,55 @@ public class Grid {
 
 	/**
 	 * build grid out of a string containing characters
-	 * TODO - assumption about the good width
-	 * TODO - add assertions
 	 * @param prefilledGrid - the string to be turned into a grid
 	 * @param wantedWidth - the wanted width of the grid
 	 */
-	public Grid(String prefilledGrid, int wantedWidth) {
+	public Grid(String prefilledGrid, int wantedWidth) throws IllegalArgumentException {
+		if (prefilledGrid.isEmpty() || (wantedWidth == 0)) {
+			throw new IllegalArgumentException();
+		}
+		
 		this.markedContent = new ArrayList<int[]>();
+		this.content = new ArrayList<String[]>();
 		this.width = wantedWidth;
 		
-		this.content = new ArrayList<String[]>();
+		String[] allChar = prefilledGrid.split(" ");
+		int gridSize = allChar.length;
 
-		String[] allNumbers = prefilledGrid.split(" ");
-		int gridSize = allNumbers.length;
-
-		if (gridSize >= wantedWidth) {
-			for (int i=0; i< gridSize ; i+=wantedWidth) {
-				int[] myArray = new int[wantedWidth];
-				this.markedContent.add(myArray);
-				this.content.add(Arrays.copyOfRange(allNumbers, i, i+wantedWidth));
-			}
-			this.resetMarkedContent();
+		if (gridSize >= wantedWidth){
+				if (gridSize % wantedWidth == 0) {
+					this.initContents(gridSize, wantedWidth, allChar);
+				}
+				/* the wanted width would result in unbalanced number of columns by row*/
+				else {
+					int newWidth = 2;
+					while (gridSize % newWidth != 0) {
+						newWidth += 1;
+					}
+					this.initContents(gridSize, newWidth, allChar);			
+				}
 		}
 		else {
-			this.content.add(allNumbers);
+			this.content.add(allChar);
 		}
 	}
+
+	
+	/**
+	 * initialize the grid content and the marked grid content
+	 * @param gridSize - the total number of chars in the grid
+	 * @param width - the number of columns in the grid
+	 * @param allChars - the chars that will fill the grid
+	 */
+	public void initContents(int gridSize, int width, String[] allChars) {
+		for (int i=0; i< gridSize ; i+=width) {
+			int[] myArray = new int[width];
+			this.markedContent.add(myArray);
+			this.content.add(Arrays.copyOfRange(allChars, i, i+width));
+		}
+		this.resetMarkedContent();
+	}
+	
 
 	/**
 	 * return the character at the given position in the grid
@@ -175,39 +198,28 @@ public class Grid {
 	public void wordSearchAux(List<String> dictionary, int row, int column, List<String> foundWords) {
 
 		this.mark(row, column);
-		System.out.println("Marking "+row+","+column);
 		this.currentWord += this.getCharAt(row, column);
-		System.out.println("Current word is: "+this.currentWord);
-		
-		System.out.println("++++++++++++++++++++++++++++++++++++++++");
-		System.out.println("Looking for "+row+","+column+" neigbours");
+
 		List<int[]> neigbours = this.allReachableNeighbours(row, column);
 		for (int[] coordAux : neigbours) {
 			int rowAux = coordAux[0];
 			int columnAux = coordAux[1];
-			System.out.println("Current neighbour is: "+rowAux+","+columnAux);
 			
 			if (!this.isMarked(rowAux, columnAux)) {
 				
 				String potentialWord = this.currentWord+this.getCharAt(rowAux, columnAux);
-				System.out.println("potential is: "+potentialWord);
 				if (Grid.isPrefix(dictionary, potentialWord)) {
 					if (Grid.isWord(dictionary, potentialWord)) {
 						foundWords.add(potentialWord);
-						System.out.println("adding: "+potentialWord);
 					}
 
 					this.wordSearchAux(dictionary, rowAux, columnAux, foundWords);
 				}				
 			}
-			else {
-				System.out.println(rowAux+","+columnAux+" was already marked");
-			}
 		}
 		/* all neighbours have been visited and the result was not an expected word: this is not a prefix*/
 		if (this.currentWord.length() >= 2) {
 			this.currentWord = this.currentWord.substring(0, this.currentWord.length()-1);
-			System.out.println("and tweaking current Word "+this.currentWord);
 		}
 	}
 	
@@ -250,8 +262,6 @@ public class Grid {
 		for (int i = 0; i<this.content.size() ; i++) {
 			for (int j = 0; j < this.width ; j ++) {
 				List<String> localResult = new ArrayList<String>();
-				System.out.println("========================================================================");
-				System.out.println("START "+i+" "+j);
 				this.resetMarkedContent();
 				this.currentWord = ""; 
 				this.wordSearchAux(dictionary, i, j, localResult);

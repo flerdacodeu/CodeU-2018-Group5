@@ -1,5 +1,6 @@
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,10 +34,11 @@ public class GridTest {
 	}
 	
 	
-//	@Test
-//	public final void wordSearchEmptyGrid(){
-//		
-//	}
+	@Test(expected = IllegalArgumentException.class)
+	public final void buildFromStringEmptyGrid(){
+		new Grid("", 3);
+
+	}
 //	
 //	@Test
 //	public final void wordSearchEmptyDict() {
@@ -46,6 +48,7 @@ public class GridTest {
 	public final void testGetCharAt() {
 		assertEquals("C", this.testGrid.getCharAt(1, 1));
 	}
+
 	
 	@Test
 	public final void testNeighbours() {
@@ -73,16 +76,27 @@ public class GridTest {
 		this.testGrid.resetMarkedContent();
 		for (int i = 0; i < expectedResult.size() ; i++) {
 			assertArrayEquals(expectedResult.get(i), this.testGrid.getMarked().get(i));
+		}	
+	}
+	
+	
+	@Test
+	public final void wordSearchEffective() {
+		List<List<String>> expectedResult = new ArrayList<List<String>>();
+		expectedResult.add(Arrays.asList("CAT", "CAA", "CAR", "CARD"));
+		List<List<String>> result = this.testGrid.wordSearch(this.testDictionary);
+		for (int i=0 ; i < result.size() ; i++) {
+			assertEquals(expectedResult.get(i), result.get(i));
+			System.out.println(result.get(i));
 		}
-		
 	}
 	
 	
 	
 	@Test
-	public final void wordSearch3Words() {
+	public final void wordSearchIneffective() {
+		this.testDictionary = Arrays.asList("HELLO", "HOW", "ARE", "YOU");
 		List<List<String>> expectedResult = new ArrayList<List<String>>();
-		expectedResult.add(Arrays.asList("CAT", "CAA", "CAR", "CARD"));
 		List<List<String>> result = this.testGrid.wordSearch(this.testDictionary);
 		for (int i=0 ; i < result.size() ; i++) {
 			assertEquals(expectedResult.get(i), result.get(i));
