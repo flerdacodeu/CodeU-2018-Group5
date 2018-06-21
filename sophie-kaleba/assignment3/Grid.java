@@ -12,9 +12,7 @@ import java.util.Set;
 
 /**
  * The grid is not necessarily square
- * The grid only contains single ascii characters
- * The search is case insensitive
- *
+ * Represents a grid of characters
  */
 public class Grid {
 
@@ -41,7 +39,7 @@ public class Grid {
 	 * @param wantedWidth - the wanted width of the grid
 	 */
 	public Grid(String prefilledGrid, int wantedWidth) throws IllegalArgumentException {
-		if (prefilledGrid.isEmpty() || (wantedWidth == 0)) {
+		if (prefilledGrid.isEmpty() || prefilledGrid == " " || (wantedWidth == 0)) {
 			throw new IllegalArgumentException();
 		}
 		
@@ -188,7 +186,7 @@ public class Grid {
 	
 	
 	/**
-	 * Adapted Depth-Traversal search algorithm
+	 * Adapted Depth-First search algorithm
 	 * Build a list of words found in both the grid and the dictionary
 	 * @param dictionary
 	 * @param row - the current row index in the grid
@@ -252,10 +250,13 @@ public class Grid {
 
 	/**
 	 * go through the grid to potentially find words from the dictionary
-	 * @param dictionary
+	 * @param dictionary - a dictionary containing words
+	 * @throws IllegalArgumentException - if the dictionary is empty
 	 * @return a list if found words from the dictionary
 	 */
-	public List<List<String>> wordSearch(List<String> dictionary) {
+	public List<List<String>> wordSearch(List<String> dictionary) throws IllegalArgumentException{
+		
+		if (dictionary.isEmpty()) throw new IllegalArgumentException("The dictionary must contain entries");
 
 		List<List<String>> result = new ArrayList<List<String>>();
 
@@ -270,9 +271,6 @@ public class Grid {
 		}
 		return result;
 	}
-
-
-
 
 
 
@@ -315,6 +313,7 @@ public class Grid {
 
 	}
 	
+	/* Getters and setters */
 	
 	public List<String[]> getContent() {
 		return this.content;

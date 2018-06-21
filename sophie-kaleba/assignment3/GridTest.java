@@ -1,6 +1,5 @@
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,11 +38,14 @@ public class GridTest {
 		new Grid("", 3);
 
 	}
-//	
-//	@Test
-//	public final void wordSearchEmptyDict() {
-//		
-//	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public final void wordSearchEmptyDict() {
+		this.testDictionary = new ArrayList<String>();
+		this.testGrid.wordSearch(this.testDictionary);
+		
+	}
+	
 	@Test
 	public final void testGetCharAt() {
 		assertEquals("C", this.testGrid.getCharAt(1, 1));
