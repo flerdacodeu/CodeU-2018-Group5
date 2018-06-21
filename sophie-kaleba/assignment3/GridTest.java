@@ -16,7 +16,7 @@ public class GridTest {
 	@Before
 	public final void init() {
 		this.testGrid = new Grid("A A R T C D", 3);
-		this.testDictionary = Arrays.asList("CAR", "CARD", "CART", "CAT");
+		this.testDictionary = Arrays.asList("CAR", "CARD", "CART", "CAT", "CAA");
 	}
 	
 	@Test
@@ -77,14 +77,16 @@ public class GridTest {
 		
 	}
 	
+	
+	
 	@Test
 	public final void wordSearch3Words() {
 		List<List<String>> expectedResult = new ArrayList<List<String>>();
+		expectedResult.add(Arrays.asList("CAT", "CAA", "CAR", "CARD"));
 		List<List<String>> result = this.testGrid.wordSearch(this.testDictionary);
 		for (int i=0 ; i < result.size() ; i++) {
-			for (int j = 0; j < result.get(i).size() ; j++) {
-				System.out.println(result.get(i).get(j));
-			}
+			assertEquals(expectedResult.get(i), result.get(i));
+			System.out.println(result.get(i));
 		}
 	}
 }

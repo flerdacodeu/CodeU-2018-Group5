@@ -164,47 +164,22 @@ public class Grid {
 	
 	
 	
-//	/**
-//	 * 
-//	 * @param dictionary
-//	 * @param row
-//	 * @param column
-//	 * @return
-//	 */
-//	public void wordSearchAux(List<String> dictionary, int row, int column, List<String> foundWords, int startRow, int startColumn) {
-//		this.mark(row, column);
-//		String potentialWord = this.currentWord+this.getCharAt(row, column);
-//		System.out.println(potentialWord);
-//		
-//		if (!Grid.isPrefix(dictionary, potentialWord)) {
-//			this.resetMarkedContent();
-//			this.mark(startRow, startColumn);
-//			return;
-//		}
-//		else if (Grid.isWord(dictionary, potentialWord)) {
-//			foundWords.add(potentialWord);
-//		}
-//		this.currentWord = potentialWord;
-//
-//		List<int[]> neigbours = this.allReachableNeighbours(row, column);
-//		for (int[] coordAux : neigbours) {
-//			int rowAux = coordAux[0];
-//			int columnAux = coordAux[1];
-//			
-//			if (!this.isMarked(rowAux, columnAux)) {
-//		
-//				this.wordSearchAux(dictionary, rowAux, columnAux, foundWords, startRow, startColumn);
-//			}
-//		}
-//	}
-	
-	public void wordSearchAux(List<String> dictionary, int row, int column, List<String> foundWords, int startRow, int startColumn) {
+	/**
+	 * Adapted Depth-Traversal search algorithm
+	 * Build a list of words found in both the grid and the dictionary
+	 * @param dictionary
+	 * @param row - the current row index in the grid
+	 * @param column - the current column index in the grid
+	 * @param foundWords - holds the found words
+	 */
+	public void wordSearchAux(List<String> dictionary, int row, int column, List<String> foundWords) {
 
 		this.mark(row, column);
 		System.out.println("Marking "+row+","+column);
 		this.currentWord += this.getCharAt(row, column);
 		System.out.println("Current word is: "+this.currentWord);
 		
+		System.out.println("++++++++++++++++++++++++++++++++++++++++");
 		System.out.println("Looking for "+row+","+column+" neigbours");
 		List<int[]> neigbours = this.allReachableNeighbours(row, column);
 		for (int[] coordAux : neigbours) {
@@ -215,31 +190,33 @@ public class Grid {
 			if (!this.isMarked(rowAux, columnAux)) {
 				
 				String potentialWord = this.currentWord+this.getCharAt(rowAux, columnAux);
+				System.out.println("potential is: "+potentialWord);
 				if (Grid.isPrefix(dictionary, potentialWord)) {
 					if (Grid.isWord(dictionary, potentialWord)) {
 						foundWords.add(potentialWord);
 						System.out.println("adding: "+potentialWord);
 					}
 
-					this.wordSearchAux(dictionary, rowAux, columnAux, foundWords, startRow, startColumn);
-				}
-				else {
-					System.out.println("Unmarking "+rowAux+","+columnAux);
-					this.unmark(rowAux, columnAux);
-					if (this.currentWord.length() >= 2) {
-						this.currentWord = this.currentWord.substring(0, this.currentWord.length()-2);
-						System.out.println("and tweaking current Word "+this.currentWord);
-					}
-				}
-				
+					this.wordSearchAux(dictionary, rowAux, columnAux, foundWords);
+				}				
 			}
 			else {
 				System.out.println(rowAux+","+columnAux+" was already marked");
 			}
 		}
+		/* all neighbours have been visited and the result was not an expected word: this is not a prefix*/
+		if (this.currentWord.length() >= 2) {
+			this.currentWord = this.currentWord.substring(0, this.currentWord.length()-1);
+			System.out.println("and tweaking current Word "+this.currentWord);
+		}
 	}
 	
-	
+	/**
+	 * Checks whether the word is a prefix of an element from the dictionary
+	 * @param dictionary
+	 * @param word
+	 * @return true if the word is a prefix, false otherwise
+	 */
 	public static boolean isPrefix(List<String> dictionary, String word) {
 		for (String s : dictionary) {
 			if (s.startsWith(word)) {
@@ -250,28 +227,34 @@ public class Grid {
 	}
 	
 	
+	/**
+	 * Checks whether the dictionary contains the word
+	 * @param dictionary
+	 * @param word
+	 * @return true if the dictionary contains the word, false otherwise
+	 */
 	public static boolean isWord(List<String> dictionary, String word) {
 		return dictionary.contains(word);
 	}
 	
 
 	/**
-	 * wanders through the grid to potentially find words from the dictionary
+	 * go through the grid to potentially find words from the dictionary
 	 * @param dictionary
 	 * @return a list if found words from the dictionary
 	 */
 	public List<List<String>> wordSearch(List<String> dictionary) {
 
 		List<List<String>> result = new ArrayList<List<String>>();
-		List<String> localResult = new ArrayList<String>();
 
 		for (int i = 0; i<this.content.size() ; i++) {
 			for (int j = 0; j < this.width ; j ++) {
+				List<String> localResult = new ArrayList<String>();
 				System.out.println("========================================================================");
 				System.out.println("START "+i+" "+j);
 				this.resetMarkedContent();
 				this.currentWord = ""; 
-				this.wordSearchAux(dictionary, i, j, localResult, i, j);
+				this.wordSearchAux(dictionary, i, j, localResult);
 				if (!localResult.isEmpty()) result.add(localResult);
 			}
 		}
