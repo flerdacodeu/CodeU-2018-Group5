@@ -1,4 +1,8 @@
-import java.util.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class TestWordSearch {
 
@@ -7,11 +11,11 @@ public class TestWordSearch {
   private TrieNode[][] validTrieGrid;
   private int numberRowsGrid;
   private int numberColumnsGrid;
-  private Dictionary validDict;
+  private TrieDictionary validDict;
   private List<String> validListOfWords;
   private char[][] nullGrid;
-  private Dictionary nullDict;
-  private Dictionary emptyDict;
+  private TrieDictionary nullDict;
+  private TrieDictionary emptyDict;
   private List<String> emptyListOfDictionaryWords;
   private boolean[][] validVisited;
   private boolean[][] nullVisited;
@@ -19,36 +23,22 @@ public class TestWordSearch {
   private ArrayList<String> nullWordsAccumulator;
   private TrieNode validTrieNode;
   private TrieNode nullTrieNode;
+  private Point validPoint;
+  private Point invalidPoint;
+  private Point nullPoint;
   private TrieNode[][] nullTrieGrid;
 
 
   /**
-   * Checks if a list contains a given trie node.
+   * Checks if a list contains a given point.
    *
    * @param list the list to be searched
-   * @param node the node of interest
-   * @return true if the node is in the list, false otherwise
+   * @param point the point of interest
+   * @return true if the point is in the list, false otherwise
    */
-  private boolean containsNode (LinkedList<TrieNode> list, TrieNode node) {
-    for (TrieNode n : list) {
-      if (n.getRow() == node.getRow() && n.getColumn() == node.getColumn() && n.getValue() ==
-          node.getValue()) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  /**
-   * Checks if a list contains the given string.
-   *
-   * @param list the list to be searched in
-   * @param word the word to be searched for in the list
-   * @return true if the list contains the string, false otherwise
-   */
-  private boolean containsWord (List<String> list, String word) {
-    for (String w : list) {
-      if (w.equals(word)) {
+  private boolean containsPoint(List<Point> list, Point point) {
+    for (Point p : list) {
+      if (p.x == point.x && p.y == point.y) {
         return true;
       }
     }
@@ -62,7 +52,7 @@ public class TestWordSearch {
    * @param grid2 the second matrix to be compared
    * @return true if they contains identical elements, false otherwise
    */
-  private boolean equalMatrices (TrieNode[][] grid1, TrieNode[][] grid2) {
+  private boolean equalMatrices(TrieNode[][] grid1, TrieNode[][] grid2) {
     assert grid1 != null && grid2 != null;
 
     if (grid1.length != grid2.length || grid1[0].length != grid2[0].length) {
@@ -71,9 +61,7 @@ public class TestWordSearch {
 
     for (int row = 0; row < grid1.length; row++) {
       for (int column = 0; column < grid1[0].length; column++) {
-        if (grid1[row][column].getValue() != grid2[row][column].getValue() ||
-            grid1[row][column].getRow() != grid2[row][column].getRow() ||
-            grid1[row][column].getColumn() != grid2[row][column].getColumn()) {
+        if (!grid1[row][column].equals(grid2[row][column])) {
           return false;
         }
       }
@@ -81,45 +69,47 @@ public class TestWordSearch {
     return true;
   }
 
-    // general setup
+  // general setup
   void generalSetUp() {
     wordSearch = new WordSearch();
 
+    nullPoint = null;
     nullTrieNode = null;
 
     nullGrid = null;
     nullTrieGrid = null;
     nullDict = null;
 
-    emptyListOfDictionaryWords = new LinkedList<>();
-    emptyDict = new Dictionary(emptyListOfDictionaryWords);
+    emptyListOfDictionaryWords = new ArrayList<>();
+    emptyDict = new TrieDictionary(emptyListOfDictionaryWords);
   }
-  
+
   void setUp1() {
-    validGrid = new char[][]{{'a','a','r'}, {'t','c','d'} };
+    validGrid = new char[][]{{'a', 'a', 'r'}, {'t', 'c', 'd'}};
     validTrieGrid = new TrieNode[][]{{new TrieNode('a', 0, 0), new TrieNode('a', 0, 1), new TrieNode('r', 0, 2)},
         {new TrieNode('t', 1, 0), new TrieNode('c', 1, 1), new TrieNode('d', 1, 2)}};
     numberRowsGrid = validGrid.length;
     numberColumnsGrid = validGrid[0].length;
-    validListOfWords = new LinkedList<>();
+    validListOfWords = new ArrayList<>();
     validListOfWords.add("car");
     validListOfWords.add("card");
     validListOfWords.add("cart");
     validListOfWords.add("cat");
-    validDict = new Dictionary(validListOfWords);
+    validDict = new TrieDictionary(validListOfWords);
 
-    validTrieNode = new TrieNode('c', 1,1);
+    validPoint = new Point(1,1);
+    invalidPoint = new Point(numberRowsGrid + 1, 0);
   }
-  
+
   void setUp2() {
-    validGrid = new char[][]{{'l','m','a','p'}, {'o','o','x', 'a'}, {'d', 'r', 'v', 'r'}, {'q', 'e', 'x', 'e'}};
-    validTrieGrid = new TrieNode[][]{{new TrieNode('l', 0, 0), new TrieNode('m', 0, 1), new TrieNode('a', 0, 2), new TrieNode('p',0,3)},
-        {new TrieNode('o', 1, 0), new TrieNode('o', 1, 1), new TrieNode('x', 1, 2), new TrieNode('a',1,3)},
-        {new TrieNode('d', 0, 0), new TrieNode('r', 0, 1), new TrieNode('v', 0, 2), new TrieNode('r',0,3)},
-        {new TrieNode('q', 0, 0), new TrieNode('e', 0, 1), new TrieNode('x', 0, 2), new TrieNode('e',0,3)}};
+    validGrid = new char[][]{{'l', 'm', 'a', 'p'}, {'o', 'o', 'x', 'a'}, {'d', 'r', 'v', 'r'}, {'q', 'e', 'x', 'e'}};
+    validTrieGrid = new TrieNode[][]{{new TrieNode('l', 0, 0), new TrieNode('m', 0, 1), new TrieNode('a', 0, 2), new TrieNode('p', 0, 3)},
+        {new TrieNode('o', 1, 0), new TrieNode('o', 1, 1), new TrieNode('x', 1, 2), new TrieNode('a', 1, 3)},
+        {new TrieNode('d', 0, 0), new TrieNode('r', 0, 1), new TrieNode('v', 0, 2), new TrieNode('r', 0, 3)},
+        {new TrieNode('q', 0, 0), new TrieNode('e', 0, 1), new TrieNode('x', 0, 2), new TrieNode('e', 0, 3)}};
     numberRowsGrid = validGrid.length;
     numberColumnsGrid = validGrid[0].length;
-    validListOfWords = new LinkedList<>();
+    validListOfWords = new ArrayList<>();
     validListOfWords.add("love");
     validListOfWords.add("more");
     validListOfWords.add("mood");
@@ -128,7 +118,7 @@ public class TestWordSearch {
     validListOfWords.add("ever");
     validListOfWords.add("drop");
     validListOfWords.add("remap");
-    validDict = new Dictionary(validListOfWords);
+    validDict = new TrieDictionary(validListOfWords);
   }
 
   // additional setup for depthFirstTraversal method
@@ -160,36 +150,36 @@ public class TestWordSearch {
   void testGetNeighbours_normalCaseCornerElementPasses() {
     boolean equalLists = true;
 
-    LinkedList<TrieNode> neighbours = wordSearch.getNeighbours(0,0, validTrieGrid);
-    LinkedList<TrieNode> expectedNeighbours = new LinkedList<>();
-    expectedNeighbours.add(new TrieNode('a',0,1));
-    expectedNeighbours.add(new TrieNode('t', 1, 0));
-    expectedNeighbours.add( new TrieNode('c', 1, 1));
+    ArrayList<Point> neighbours = wordSearch.getNeighbours(new Point(0,0), validTrieGrid);
+    ArrayList<Point> expectedNeighbours = new ArrayList<>();
+    expectedNeighbours.add(new Point(0,1));
+    expectedNeighbours.add(new Point(1,0));
+    expectedNeighbours.add(new Point(1,1));
 
     assert (neighbours.size() == expectedNeighbours.size());
 
-    for (TrieNode expNeighbour : expectedNeighbours) {
-      equalLists = equalLists && containsNode(neighbours, expNeighbour);
+    for (Point expNeighbour : expectedNeighbours) {
+      equalLists = equalLists && containsPoint(neighbours, expNeighbour);
     }
 
-    assert(equalLists);
+    assert (equalLists);
   }
 
   void testGetNeighbours_normalCaseMiddleElementPasses() {
     boolean equal = true;
 
-    LinkedList<TrieNode> neighbours = wordSearch.getNeighbours(1,1, validTrieGrid);
-    LinkedList<TrieNode> expectedNeighbours = new LinkedList<>();
-    expectedNeighbours.add(new TrieNode('a',0,0));
-    expectedNeighbours.add(new TrieNode('a',0,1));
-    expectedNeighbours.add(new TrieNode('r',0,2));
-    expectedNeighbours.add(new TrieNode('t', 1, 0));
-    expectedNeighbours.add( new TrieNode('d', 1, 2));
+    ArrayList<Point> neighbours = wordSearch.getNeighbours(validPoint, validTrieGrid);
+    ArrayList<Point> expectedNeighbours = new ArrayList<>();
+    expectedNeighbours.add(new Point(0,0));
+    expectedNeighbours.add(new Point(0,1));
+    expectedNeighbours.add(new Point(0,2));
+    expectedNeighbours.add(new Point(1,0));
+    expectedNeighbours.add(new Point(1,2));
 
     assert (neighbours.size() == expectedNeighbours.size());
 
-    for (TrieNode expNeighbour : expectedNeighbours) {
-      equal = equal && containsNode(neighbours, expNeighbour);
+    for (Point expNeighbour : expectedNeighbours) {
+      equal = equal && containsPoint(neighbours, expNeighbour);
     }
 
     assert (equal);
@@ -198,7 +188,7 @@ public class TestWordSearch {
   void testGetNeighbours_negativeRowOrColumnFails() {
     boolean throwsError = false;
     try {
-      wordSearch.getNeighbours(-1,1, validTrieGrid);
+      wordSearch.getNeighbours(new Point(-1,1), validTrieGrid);
     } catch (AssertionError e) {
       throwsError = true;
     }
@@ -208,7 +198,7 @@ public class TestWordSearch {
   void testGetNeighbours_nullGridFails() {
     boolean throwsError = false;
     try {
-      wordSearch.getNeighbours(1,1, null);
+      wordSearch.getNeighbours(validPoint, null);
     } catch (AssertionError e) {
       throwsError = true;
     }
@@ -217,9 +207,9 @@ public class TestWordSearch {
 
   void testDepthFirstTraversal_validInputPasses() {
     boolean equalLists = true;
-    wordSearch.depthFirstTraversal(validTrieNode, validTrieGrid, validDict, validVisited, validWordsAccumulator);
+    wordSearch.depthFirstTraversal(validPoint, validTrieGrid, validDict, validVisited, validWordsAccumulator);
 
-    LinkedList<String> expectedWords = new LinkedList<>();
+    ArrayList<String> expectedWords = new ArrayList<>();
     expectedWords.add("cat");
     expectedWords.add("cat");
     expectedWords.add("car");
@@ -227,8 +217,8 @@ public class TestWordSearch {
 
     assert expectedWords.size() == validWordsAccumulator.size();
 
-    for (String expectedWord : expectedWords ) {
-      equalLists = equalLists && containsWord(validWordsAccumulator, expectedWord);
+    for (String expectedWord : expectedWords) {
+      equalLists = equalLists && validWordsAccumulator.contains(expectedWord);
     }
     assert equalLists;
   }
@@ -236,7 +226,7 @@ public class TestWordSearch {
   void testDepthFirstTraversal_NullStartingPointFails() {
     boolean throwsError = false;
     try {
-      wordSearch.depthFirstTraversal(nullTrieNode, validTrieGrid, validDict, validVisited, validWordsAccumulator);
+      wordSearch.depthFirstTraversal(nullPoint, validTrieGrid, validDict, validVisited, validWordsAccumulator);
     } catch (AssertionError e) {
       throwsError = true;
     }
@@ -246,7 +236,7 @@ public class TestWordSearch {
   void testDepthFirstTraversal_NullGridFails() {
     boolean throwsError = false;
     try {
-      wordSearch.depthFirstTraversal(validTrieNode, nullTrieGrid, validDict, validVisited, validWordsAccumulator);
+      wordSearch.depthFirstTraversal(validPoint, nullTrieGrid, validDict, validVisited, validWordsAccumulator);
     } catch (AssertionError e) {
       throwsError = true;
     }
@@ -256,7 +246,7 @@ public class TestWordSearch {
   void testDepthFirstTraversal_NullDictionaryFails() {
     boolean throwsError = false;
     try {
-      wordSearch.depthFirstTraversal(validTrieNode, validTrieGrid, nullDict, validVisited, validWordsAccumulator);
+      wordSearch.depthFirstTraversal(validPoint, validTrieGrid, nullDict, validVisited, validWordsAccumulator);
     } catch (AssertionError e) {
       throwsError = true;
     }
@@ -264,14 +254,14 @@ public class TestWordSearch {
   }
 
   void testDepthFirstTraversal_EmptyDictionaryPasses() {
-    wordSearch.depthFirstTraversal(validTrieNode, validTrieGrid, emptyDict, validVisited, validWordsAccumulator);
+    wordSearch.depthFirstTraversal(validPoint, validTrieGrid, emptyDict, validVisited, validWordsAccumulator);
     assert validWordsAccumulator.isEmpty();
   }
 
   void testDepthFirstTraversal_nullVisitedFails() {
     boolean throwsError = false;
     try {
-      wordSearch.depthFirstTraversal(validTrieNode, validTrieGrid, validDict, nullVisited, validWordsAccumulator);
+      wordSearch.depthFirstTraversal(validPoint, validTrieGrid, validDict, nullVisited, validWordsAccumulator);
     } catch (AssertionError e) {
       throwsError = true;
     }
@@ -281,7 +271,7 @@ public class TestWordSearch {
   public void testDepthFirstTraversal_nullWordsAccumulatorFails() {
     boolean throwsError = false;
     try {
-      wordSearch.depthFirstTraversal(validTrieNode, validTrieGrid, validDict, validVisited, nullWordsAccumulator);
+      wordSearch.depthFirstTraversal(validPoint, validTrieGrid, validDict, validVisited, nullWordsAccumulator);
     } catch (AssertionError e) {
       throwsError = true;
     }
@@ -309,17 +299,18 @@ public class TestWordSearch {
   }
 
   void testCreateTrieGrid_validInputPasses() {
+//    assert Arrays.equals(validTrieGrid, wordSearch.createTrieGrid(validGrid, numberRowsGrid, numberColumnsGrid));
     assert equalMatrices(validTrieGrid, wordSearch.createTrieGrid(validGrid, numberRowsGrid, numberColumnsGrid));
   }
 
   void testIsWithinBoundaries_negativeRowOrColumnFails() {
-    assert !wordSearch.isWithinBoundaries(-1, 1, numberRowsGrid, numberColumnsGrid);
+    assert !wordSearch.isWithinBoundaries(new Point(1,-1), numberRowsGrid, numberColumnsGrid);
   }
 
   void testIsWithinBoundaries_negativeRowOrColumnBoundaryFails() {
     boolean throwsError = false;
     try {
-      wordSearch.isWithinBoundaries(1,1, -numberRowsGrid, numberColumnsGrid);
+      wordSearch.isWithinBoundaries(validPoint, -numberRowsGrid, numberColumnsGrid);
     } catch (AssertionError e) {
       throwsError = true;
     }
@@ -327,7 +318,7 @@ public class TestWordSearch {
   }
 
   void testIsWithinBoundaries_RowGreaterThanRowBoundaryFails() {
-    assert !wordSearch.isWithinBoundaries(numberRowsGrid + 1, 0, numberRowsGrid, numberColumnsGrid);
+    assert !wordSearch.isWithinBoundaries(invalidPoint, numberRowsGrid, numberColumnsGrid);
   }
 
   void testGetStringFromRootToNode_nullNodeFails() {
@@ -375,17 +366,17 @@ public class TestWordSearch {
     expectedWords.add("car");
     expectedWords.add("cat");
     expectedWords.add("card");
-    
+
     assert words.size() == expectedWords.size();
 
-    LinkedList<String> wordsList = new LinkedList<>(words);
+    ArrayList<String> wordsList = new ArrayList<>(words);
     for (String expectedWord : expectedWords) {
-      equalSets = equalSets && containsWord(wordsList, expectedWord);
+      equalSets = equalSets && wordsList.contains(expectedWord);
     }
     assert equalSets;
   }
-  
-    void testWordSearch_validInputPassesSetUp2() {
+
+  void testWordSearch_validInputPassesSetUp2() {
     boolean equalSets = true;
     Set<String> words = wordSearch.wordSearch(validGrid, validDict);
     Set<String> expectedWords = new HashSet<>();
@@ -396,11 +387,11 @@ public class TestWordSearch {
     expectedWords.add("map");
     expectedWords.add("ever");
 
-    assert words.size() == expectedWords.size();  
-    
-    LinkedList<String> wordsList = new LinkedList<>(words);
+    assert words.size() == expectedWords.size();
+
+    ArrayList<String> wordsList = new ArrayList<>(words);
     for (String expectedWord : expectedWords) {
-      equalSets = equalSets && containsWord(wordsList, expectedWord);
+      equalSets = equalSets && wordsList.contains(expectedWord);
     }
     assert equalSets;
   }
