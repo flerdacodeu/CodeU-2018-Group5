@@ -1,16 +1,15 @@
 import java.util.List;
 
 /**
- * The dictionary is implemented as a trie
+ * The trie implementation of the Dictionary interface
  * O(n) complexity for checking the existence of a word/ inserting a new word,
  * where n is the length of the word
  */
-
-public class Dictionary {
+public class TrieDictionary implements Dictionary {
 
   private TrieNode root = new TrieNode();
 
-  public Dictionary(List<String> words) {
+  public TrieDictionary(List<String> words) {
     assert words != null;
     for (String word : words) {
       root.insertWord(word);
@@ -28,7 +27,7 @@ public class Dictionary {
     if (input == null) {
       throw new IllegalArgumentException("null input");
     }
-    
+
     return root.containsWord(input);
   }
 
@@ -43,7 +42,7 @@ public class Dictionary {
     if (input == null) {
       throw new IllegalArgumentException("null input");
     }
-    
+
     return root.containsPrefix(input);
   }
 }
