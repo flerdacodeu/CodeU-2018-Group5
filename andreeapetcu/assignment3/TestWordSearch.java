@@ -1,8 +1,6 @@
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 
 public class TestWordSearch {
 
@@ -34,7 +32,7 @@ public class TestWordSearch {
    *
    * @param list the list to be searched
    * @param point the point of interest
-   * @return true if the point is in the list, false otherwise
+   * @return true if the node is in the list, false otherwise
    */
   private boolean containsPoint(List<Point> list, Point point) {
     for (Point p : list) {
@@ -61,7 +59,7 @@ public class TestWordSearch {
 
     for (int row = 0; row < grid1.length; row++) {
       for (int column = 0; column < grid1[0].length; column++) {
-        if (!grid1[row][column].equals(grid2[row][column])) {
+        if (!(grid1[row][column].equals(grid2[row][column]))) {
           return false;
         }
       }
@@ -86,8 +84,8 @@ public class TestWordSearch {
 
   void setUp1() {
     validGrid = new char[][]{{'a', 'a', 'r'}, {'t', 'c', 'd'}};
-    validTrieGrid = new TrieNode[][]{{new TrieNode('a', 0, 0), new TrieNode('a', 0, 1), new TrieNode('r', 0, 2)},
-        {new TrieNode('t', 1, 0), new TrieNode('c', 1, 1), new TrieNode('d', 1, 2)}};
+    validTrieGrid = new TrieNode[][]{{new TrieNode('a'), new TrieNode('a'), new TrieNode('r')},
+        {new TrieNode('t'), new TrieNode('c'), new TrieNode('d')}};
     numberRowsGrid = validGrid.length;
     numberColumnsGrid = validGrid[0].length;
     validListOfWords = new ArrayList<>();
@@ -103,10 +101,10 @@ public class TestWordSearch {
 
   void setUp2() {
     validGrid = new char[][]{{'l', 'm', 'a', 'p'}, {'o', 'o', 'x', 'a'}, {'d', 'r', 'v', 'r'}, {'q', 'e', 'x', 'e'}};
-    validTrieGrid = new TrieNode[][]{{new TrieNode('l', 0, 0), new TrieNode('m', 0, 1), new TrieNode('a', 0, 2), new TrieNode('p', 0, 3)},
-        {new TrieNode('o', 1, 0), new TrieNode('o', 1, 1), new TrieNode('x', 1, 2), new TrieNode('a', 1, 3)},
-        {new TrieNode('d', 0, 0), new TrieNode('r', 0, 1), new TrieNode('v', 0, 2), new TrieNode('r', 0, 3)},
-        {new TrieNode('q', 0, 0), new TrieNode('e', 0, 1), new TrieNode('x', 0, 2), new TrieNode('e', 0, 3)}};
+    validTrieGrid = new TrieNode[][]{{new TrieNode('l'), new TrieNode('m'), new TrieNode('a'), new TrieNode('p')},
+        {new TrieNode('o'), new TrieNode('o'), new TrieNode('x'), new TrieNode('a')},
+        {new TrieNode('d'), new TrieNode('r'), new TrieNode('v'), new TrieNode('r')},
+        {new TrieNode('q'), new TrieNode('e'), new TrieNode('x'), new TrieNode('e')}};
     numberRowsGrid = validGrid.length;
     numberColumnsGrid = validGrid[0].length;
     validListOfWords = new ArrayList<>();
@@ -299,7 +297,7 @@ public class TestWordSearch {
   }
 
   void testCreateTrieGrid_validInputPasses() {
-//    assert Arrays.equals(validTrieGrid, wordSearch.createTrieGrid(validGrid, numberRowsGrid, numberColumnsGrid));
+    //assert Arrays.equals(validTrieGrid, wordSearch.createTrieGrid(validGrid, numberRowsGrid, numberColumnsGrid));
     assert equalMatrices(validTrieGrid, wordSearch.createTrieGrid(validGrid, numberRowsGrid, numberColumnsGrid));
   }
 
