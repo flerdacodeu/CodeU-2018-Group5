@@ -59,7 +59,7 @@ public class WordSearch {
     TrieNode[][] newGrid = new TrieNode[numberRows][numberColumns];
     for (int row = 0; row < numberRows; row++) {
       for (int column = 0; column < numberColumns; column++) {
-        newGrid[row][column] = new TrieNode(grid[row][column], row, column);
+        newGrid[row][column] = new TrieNode(grid[row][column]);
       }
     }
     return newGrid;
