@@ -22,12 +22,6 @@ public class TrieNode {
     children = new TrieNode[LETTERS];
   }
 
-  public TrieNode (char value, int row, int column) {
-    assert value >= 'a' && value <= 'z' && row >= 0 && column >= 0;
-    this.value = value;
-    children = new TrieNode[LETTERS];
-  }
-
   /**
    * Adds a new word into the trie.
    *
@@ -160,6 +154,13 @@ public class TrieNode {
     }
 
     TrieNode node = (TrieNode) obj;
-    return value == node.value;
+    return this.value == node.value ;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = 17;
+    result = 31 * result + value;
+    return result;
   }
 }
