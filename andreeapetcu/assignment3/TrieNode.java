@@ -1,9 +1,4 @@
-import java.util.ArrayList;
-
 /**
- * Modified implementation of a trie node such that it contains the position (row and column index)
- * of a character in the grid
- *
  * ASSUMPTIONS : ASCII character encoding, lower case letters only
  */
 
@@ -13,34 +8,24 @@ public class TrieNode {
 
   private char value;
   private TrieNode parent;
-  // the row index of the node in the grid
-  private int row;
-  // the column index of the node in the grid
-  private int column;
-  /* nodes with the same value but different positions are treated as different nodes;
-   * thus, the child with the given value consists of an array of nodes with identical values
-   * but different positions
-   */
-  private ArrayList<TrieNode>[] children;
-  boolean isWord;
+  private TrieNode[] children;
+  private boolean isWord;
 
   // used to create the root only
   public TrieNode(){
-    children = new ArrayList[LETTERS];
+    children = new TrieNode[LETTERS];
   }
 
   public TrieNode (char value) {
     assert value >= 'a' && value <= 'z';
     this.value = value;
-    children = new ArrayList[LETTERS];
+    children = new TrieNode[LETTERS];
   }
 
   public TrieNode (char value, int row, int column) {
     assert value >= 'a' && value <= 'z' && row >= 0 && column >= 0;
     this.value = value;
-    this.row = row;
-    this.column = column;
-    children = new ArrayList[LETTERS];
+    children = new TrieNode[LETTERS];
   }
 
   /**
@@ -53,22 +38,21 @@ public class TrieNode {
     if (word == null) {
       throw new IllegalArgumentException("null input");
     }
-    
+
     if (word.isEmpty()) {
       return;
     }
 
     char letter = word.charAt(0);
-    ArrayList<TrieNode> child = children[getIndexOfCharacter(letter)];
+    TrieNode child = children[getIndexOfCharacter(letter)];
     if (child == null) {
-      children[getIndexOfCharacter(letter)] = new ArrayList<>();
-      children[getIndexOfCharacter(letter)].add(new TrieNode(letter));
+      children[getIndexOfCharacter(letter)] = new TrieNode(letter);
     }
 
     if (word.length() > 1) {
-      children[getIndexOfCharacter(letter)].get(0).insertWord(word.substring(1));
+      children[getIndexOfCharacter(letter)].insertWord(word.substring(1));
     } else {
-      children[getIndexOfCharacter(letter)].get(0).isWord = true;
+      children[getIndexOfCharacter(letter)].isWord = true;
     }
   }
 
@@ -77,7 +61,7 @@ public class TrieNode {
    *
    * @param word the word whose existence in trie is checked
    * @return true if the trie contains the word, false otherwise
-   * @throws IllegalArgumentException if the element to be searched for is null
+   * @throws IllegalArgumentException id the element to be searched for is null
    */
   public boolean containsWord (String word) {
     if (word == null) {
@@ -86,11 +70,11 @@ public class TrieNode {
 
     if (word.length() > 0) {
       char letter = word.charAt(0);
-      ArrayList<TrieNode> child = children[getIndexOfCharacter(letter)];
-      if (child == null || !(child.get(0).value == letter)) {
+      TrieNode child = children[getIndexOfCharacter(letter)];
+      if (child == null || !(child.value == letter)) {
         return false;
       } else {
-        return child.get(0).containsWord(word.substring(1));
+        return child.containsWord(word.substring(1));
       }
     }
 
@@ -102,7 +86,7 @@ public class TrieNode {
    *
    * @param prefix the prefix whose existence in trie is checked
    * @return true if the trie contains the prefix, false otherwise
-   * @throws IllegalArgumentException if the element to be searched for is null
+   * @throws IllegalArgumentException if the input prefix is null
    */
   public boolean containsPrefix (String prefix) {
     if (prefix == null) {
@@ -111,11 +95,11 @@ public class TrieNode {
 
     if (prefix.length() > 0) {
       char letter = prefix.charAt(0);
-      ArrayList<TrieNode> child = children[getIndexOfCharacter(letter)];
-      if (child == null || !(child.get(0).value == letter)) {
-        return false;
+      TrieNode child = children[getIndexOfCharacter(letter)];
+      if (child == null || !(child.value == letter)) {
+          return false;
       } else {
-        return child.get(0).containsPrefix(prefix.substring(1));
+        return child.containsPrefix(prefix.substring(1));
       }
     }
 
@@ -133,32 +117,9 @@ public class TrieNode {
       throw new IllegalArgumentException("Null node");
     }
     node.parent = this;
-    ArrayList<TrieNode> childrenWithSameValue = children[getIndexOfCharacter(node.getValue())];
-    if (childrenWithSameValue == null) {
-      childrenWithSameValue = new ArrayList<>();
-      childrenWithSameValue.add(node);
-      children[getIndexOfCharacter(node.getValue())] = childrenWithSameValue;
-    } else if (!node.exists(childrenWithSameValue)) {
-      childrenWithSameValue.add(node);
+    if (children[getIndexOfCharacter(node.getValue())] == null) {
+      children[getIndexOfCharacter(node.getValue())] = node;
     }
-  }
-
-  /**
-   * Checks if a trie node with identical position (same row and column index) already exists
-   * in the list of children with the same value
-   *
-   * @param childrenWithSameValue the array of child nodes that have the same value
-   * @return true if a node with identical position exists, false otherwise
-   */
-  private boolean exists (ArrayList<TrieNode> childrenWithSameValue) {
-    assert childrenWithSameValue != null;
-    
-    for (TrieNode n : childrenWithSameValue) {
-      if (n.getRow() == getRow() && n.getColumn() == getColumn()) {
-        return true;
-      }
-    }
-    return false;
   }
 
   /**
@@ -192,17 +153,13 @@ public class TrieNode {
     return parent;
   }
 
-  /**
-   * Returns the row index of the matrix the node is stored into
-   */
-  public int getRow() {
-    return row;
-  }
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null || this.getClass() != obj.getClass()) {
+      return false;
+    }
 
-  /**
-   * Returns the column index of the matrix the node is stored into
-   */
-  public int getColumn() {
-    return column;
+    TrieNode node = (TrieNode) obj;
+    return value == node.value;
   }
 }
