@@ -1,6 +1,7 @@
-import java.awt.*;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -75,7 +76,7 @@ public class WordSearch {
    * @param visited agenda of elements that exist in a word
    * @param words the list of valid words that the algorithm finds
    */
-  void depthFirstTraversal (Point nodePosition, TrieNode[][] grid, TrieDictionary dict, boolean[][] visited, ArrayList<String> words) {
+  void depthFirstTraversal (Point nodePosition, TrieNode[][] grid, TrieDictionary dict, boolean[][] visited, List<String> words) {
     assert nodePosition != null && grid != null && dict != null && visited != null && words != null;
 
     TrieNode node = grid[nodePosition.x][nodePosition.y];
