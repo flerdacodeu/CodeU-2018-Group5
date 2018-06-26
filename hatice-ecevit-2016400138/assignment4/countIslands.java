@@ -14,7 +14,7 @@ public class countIslands {
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
                 if (map[i][j]) {
-                    if (i > 0 && j > 0 && map[i-1][j] && map[i][j-1])
+                    if (i > 0 && j > 0 && map[i-1][j] && map[i][j-1] && !map[i-1][j-1])
                         numOfIslands--;
                     if (i != 0 && !map[i-1][j] && j != 0 && !map[i][j-1])
                         numOfIslands++;
