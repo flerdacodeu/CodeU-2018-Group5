@@ -1,39 +1,39 @@
 
 public class Point {
 	
-	int x;
-	int y;
+	int col;
+	int row;
 	
-	public Point (int x, int y) {
-		this.x = x;
-		this.y = y;
+	public Point (int col, int row) {
+		this.col = col;
+		this.row = row;
 	}
 	
-	int getX() {
-		return this.x;
+	int getCol() {
+		return this.col;
 	}
 	
-	int getY() {
-		return this.y;
+	int getRow() {
+		return this.row;
 	}
 	
 	public Point topNeighbour() {
-		return new Point(x, y-1);
+		return new Point(col, row-1);
 		
 	}
 	
 	
 	public Point bottomNeighbour() {
-		return new Point(x, y+1);
+		return new Point(col, row+1);
 		
 	}
 	
 	public Point rightNeighbour() {
-		return new Point(x+1, y);
+		return new Point(col+1, row);
 		
 	}
 	
 	public Point leftNeighbour() {
-		return new Point(x-1, y);
+		return new Point(col-1, row);
 	}
 }
