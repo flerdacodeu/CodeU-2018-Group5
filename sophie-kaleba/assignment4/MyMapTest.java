@@ -3,18 +3,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class MyMapTest {
-
-	@Test
-	public void testBuildMap() {
-		boolean[][] map = new boolean[][]{
-			  { false, true, false, true },
-			  { true, true, false, false },
-			  { false, false, true, false },
-			  { false, false, true, false },
-			};
-		assertEquals(map[0][0],false);
-		assertEquals(map[1][0],true);	
-	}
 	
 	@Test
 	public void test3Islands() {
@@ -38,6 +26,18 @@ public class MyMapTest {
 			};
 		int res = MyMap.getNumberOfIslands(4, 4, map);
 		assertEquals(res,0);
+	}
+	
+	@Test
+	public void testOneBigIsland() {
+		boolean[][] map = new boolean[][]{
+			  { true, true, true, true },
+			  { true, true, true, true },
+			  { true, true, true, true },
+			  { true, true, true, true },
+			};
+		int res = MyMap.getNumberOfIslands(4, 4, map);
+		assertEquals(res,1);
 	}
 
 }
