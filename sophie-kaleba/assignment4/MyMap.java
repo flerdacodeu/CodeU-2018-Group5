@@ -86,8 +86,8 @@ public class MyMap {
 			for (int j = 0 ; j < rows ; j++) {
 				
 				Point currentPoint = new Point(i,j);
-				if (currentBox) {
-					MyMap.fill(currentBox, map);
+				if (MyMap.isLand(currentPoint,  map)) {
+					MyMap.fill(currentPoint, rows, columns, map);
 					numberOfIslands+=1;
 				}		
 			}
@@ -97,13 +97,23 @@ public class MyMap {
 
 	public static void fill(Point point, int rows, int columns, boolean[][] map) {
 		
-		if (point.isValid()) {
+		if (MyMap.isValid(point, rows, columns)) {
 			map[point.x][point.y] = false;
-			MyMap.fill(point.topNeighbour, map);
-			MyMap.fill(point.leftNeighbour, map);
-			MyMap.fill(point.rightNeighbour, map);
-			MyMap.fill(point.bottomNeighbour, map);
+			MyMap.fill(point.topNeighbour(), rows, columns, map);
+			MyMap.fill(point.leftNeighbour(), rows, columns, map);
+			MyMap.fill(point.rightNeighbour(), rows, columns, map);
+			MyMap.fill(point.bottomNeighbour(), rows, columns, map);
 		}
+	}
+	
+	
+	public static boolean isValid(Point point, int rows, int columns) {
+		return point.getX()>=0 && point.getX()<columns && point.getY()>=0 && point.getY()<rows;   	
+	}
+
+	
+	public static boolean isLand(Point point, boolean[][] map) {
+		return map[point.getY()][point.getX()];
 	}
 
 	

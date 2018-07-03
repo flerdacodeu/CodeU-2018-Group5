@@ -9,6 +9,14 @@ public class Point {
 		this.y = y;
 	}
 	
+	int getX() {
+		return this.x;
+	}
+	
+	int getY() {
+		return this.y;
+	}
+	
 	public Point topNeighbour() {
 		return new Point(x, y-1);
 		
