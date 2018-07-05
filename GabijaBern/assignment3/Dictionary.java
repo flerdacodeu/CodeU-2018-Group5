@@ -13,7 +13,7 @@ public class Dictionary {
 	 * @param word It is a word that needs to be added to the dictionary
 	 */
 	public void putFromRoot(String word) {
-		if(rootChildren.containsKey(word.charAt(0))) {
+		if(!rootChildren.containsKey(word.charAt(0))) {
 			rootChildren.put(word.charAt(0), new Node());
 		}
 		putWord(word.substring(1), rootChildren.get(word.charAt(0)));
@@ -26,7 +26,7 @@ public class Dictionary {
 	 * it later in searching for words
 	 * @param word the word that we want to put into trie
 	 */
-	public void putWord(String word, Node root) {
+	private void putWord(String word, Node root) {
 		
 		Node nextRoot;
 		
@@ -39,6 +39,7 @@ public class Dictionary {
 		}
 		
 		if(word.length() == 1 ) {
+
 			nextRoot.end=true;
 			return;
 		}
@@ -48,6 +49,11 @@ public class Dictionary {
 	}
 	
 	public boolean isPrefix(String word) {
+		
+		if(word.length()==0) {
+			return true;
+		}
+		
 		if(rootChildren.containsKey(word.charAt(0))){
 			if(word.length()==1) {
 				return true;
@@ -60,10 +66,11 @@ public class Dictionary {
 	}
 	
 	private boolean recursivePrefixSearch(String word, Node root) {
-		if(word.length()==0) {
+		
+		if(word.length()==1) {
 			return true;
 		}
-		if(root.children.containsKey(word.charAt(0))) {
+		else if(root.children.containsKey(word.charAt(0))){
 			return recursiveWordSearch(word.substring(1), root.children.get(word.charAt(0)));
 		}
 		else {
@@ -77,15 +84,22 @@ public class Dictionary {
 	 * 
 	 */
 	public boolean isWord(String word) {
+		if(word.length()==0) {
+			return true;
+		}
+		
 		if(rootChildren.containsKey(word.charAt(0))){
 			if(word.length()==1) {
-				return true;
+				if(rootChildren.get(word.charAt(0)).end) {
+					return true;
+				}
+				return false;
 			}
 			return recursiveWordSearch(word.substring(1), rootChildren.get(word.charAt(0)));
 		}
 		else{
 			return false;
-		}
+		}	
 	}
 	/*
 	 * Recursive method for going deeper into trie and searching if the word is in the dictionary
@@ -103,7 +117,7 @@ public class Dictionary {
 				return false;
 			}
 		}
-		if(node.children.containsKey(word.charAt(0))) {
+		if(node.children.containsKey(word.charAt(0))){
 			return recursiveWordSearch(word.substring(1), node.children.get(word.charAt(0)));
 		}
 		else {
