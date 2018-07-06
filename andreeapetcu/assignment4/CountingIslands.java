@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CountingIslands {
+  // land is represented as true, water is represented as false on the map
   private static final boolean WATER = false;
 
   /**
@@ -21,7 +22,7 @@ public class CountingIslands {
    * @return the number of islands
    * @throws IllegalArgumentException if the map is null or the number of rows/columns is negative
    */
-  public static int countingIslands(int rows, int columns, boolean[][] map) {
+  public int countingIslands(int rows, int columns, boolean[][] map) {
     if (map == null || rows < 0 || columns < 0) {
       throw new IllegalArgumentException();
     }
@@ -45,7 +46,7 @@ public class CountingIslands {
    * @param map     a two-dimensional map of tiles
    * @return a disjoint set of the unions of tiles into islands
    */
-  static UnionFind mergeTilesIntoIslands(int rows, int columns, boolean[][] map) {
+  UnionFind mergeTilesIntoIslands(int rows, int columns, boolean[][] map) {
     assert rows > 0 && columns > 0 && map != null;
 
     UnionFind islandUnions = new UnionFind(rows * columns);
@@ -90,7 +91,7 @@ public class CountingIslands {
    * @param columns the number of columns in the map
    * @return the number of islands on the map
    */
-  private static int findNumberOfIslands(UnionFind unions, boolean[][] map, int rows, int columns) {
+  private int findNumberOfIslands(UnionFind unions, boolean[][] map, int rows, int columns) {
     assert unions != null && map != null && rows >= 0 && columns >= 0;
 
     int numberOfIslands = 0;
@@ -120,7 +121,7 @@ public class CountingIslands {
    * @return the number of islands
    * @throws IllegalArgumentException if the map is null or the number of rows/columns is negative
    */
-  public static int countIslands(int rows, int columns, boolean[][] map) {
+  public int countIslands(int rows, int columns, boolean[][] map) {
     if (rows < 0 || columns < 0 || map == null) {
       throw new IllegalArgumentException();
     }
@@ -153,7 +154,7 @@ public class CountingIslands {
    * @param currentTile the starting tile of the flood
    * @param islandTiles accumulator of the tiles that are flooded
    */
-  static void discoverIsland(boolean[][] map, Tile currentTile, List<Tile> islandTiles) {
+  void discoverIsland(boolean[][] map, Tile currentTile, List<Tile> islandTiles) {
     assert map != null && currentTile != null && islandTiles != null;
 
     if (map.length == 0) {
@@ -178,7 +179,7 @@ public class CountingIslands {
    * @param tile the tile to be checked
    * @return true if the tile is land, false if the tile is water
    */
-  private static boolean isLand(boolean[][] map, Tile tile) {
+  private boolean isLand(boolean[][] map, Tile tile) {
     assert map != null && tile != null;
     return map[tile.row][tile.column];
   }
@@ -191,7 +192,7 @@ public class CountingIslands {
    * @param map  the map the land tile belongs to
    * @param land the tile to be flooded
    */
-  private static void flood(boolean[][] map, Tile land) {
+  private void flood(boolean[][] map, Tile land) {
     map[land.row][land.column] = WATER;
   }
 
@@ -204,7 +205,7 @@ public class CountingIslands {
    * @param currentTile the tile whose neighbours are searched for
    * @return list of the neighbours of the given tile
    */
-  static ArrayList<Tile> getNeighbours(boolean[][] map, Tile currentTile) {
+  ArrayList<Tile> getNeighbours(boolean[][] map, Tile currentTile) {
     assert map != null && currentTile != null;
 
     ArrayList<Tile> neighbours = new ArrayList<>();
@@ -243,7 +244,7 @@ public class CountingIslands {
    * @param maxColumns the number of columns of the map
    * @return true if the tile is valid, false otherwise
    */
-  static boolean isValidTile(Tile tile, int maxRows, int maxColumns) {
+  boolean isValidTile(Tile tile, int maxRows, int maxColumns) {
     assert tile != null && maxRows > 0 && maxColumns > 0;
     if (tile.row < 0 || tile.column < 0 || tile.row >= maxRows || tile.column >= maxColumns) {
       return false;
