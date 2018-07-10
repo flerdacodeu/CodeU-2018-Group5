@@ -1,30 +1,32 @@
 import static org.junit.Assert.assertTrue;
 
-import java.util.Set;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 
 public class AlphabetTest {
 	
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public final void emptyDictionary() {
 		String[] dictionary = {};
-		assertTrue(false);
+		Alphabet.build(dictionary)
 	}
 	
 	
 	@Test
 	public final void oneWordDictionary() {
 		String[] dictionary = {"act"};
-		assertTrue(false);		
+		List<Character> expectedResult = Arrays.asList('a','c','t');
+		assertEquals(Alphabet.build(dictionary), expectedResult);	
 	}
 	
 	
 	@Test
 	public final void sameFirstLetterDictionary() {
 		String[] dictionary = {"act", "aca", "aat", "art" };
-		//TODO - only valid result = c,t,a,r
-		assertTrue(false);		
+		List<Character> expectedResult = Arrays.asList('c','t','a','r'); //only valid result = c,t,a,r
+		assertEquals(Alphabet.build(dictionary), expectedResult);	
 	}
 	
 	@Test
