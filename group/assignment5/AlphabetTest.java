@@ -1,3 +1,4 @@
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -10,23 +11,26 @@ public class AlphabetTest {
 	@Test(expected = IllegalArgumentException.class)
 	public final void emptyDictionary() {
 		String[] dictionary = {};
-		Alphabet.build(dictionary)
+		Alphabet alpha = new Alphabet(dictionary);
+		alpha.build();
 	}
 	
 	
 	@Test
 	public final void oneWordDictionary() {
 		String[] dictionary = {"act"};
+		Alphabet alpha = new Alphabet(dictionary);
 		List<Character> expectedResult = Arrays.asList('a','c','t');
-		assertEquals(Alphabet.build(dictionary), expectedResult);	
+		assertEquals(alpha.build(), expectedResult);	
 	}
 	
 	
 	@Test
 	public final void sameFirstLetterDictionary() {
 		String[] dictionary = {"act", "aca", "aat", "art" };
+		Alphabet alpha = new Alphabet(dictionary);
 		List<Character> expectedResult = Arrays.asList('c','t','a','r'); //only valid result = c,t,a,r
-		assertEquals(Alphabet.build(dictionary), expectedResult);	
+		assertEquals(alpha.build(), expectedResult);	
 	}
 	
 	@Test
