@@ -1,8 +1,8 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * 
@@ -30,6 +30,7 @@ public class Alphabet {
 			throw new IllegalArgumentException("The dictionary must not be empty");
 		}
 		
+		//the alphabet order can follow the order of the word letters
 		else if (dictSize == 1) {
 			String uniqueWord = this.dictionary[0];
 			List<Character> result = new ArrayList<Character>();
@@ -54,8 +55,9 @@ public class Alphabet {
 	 */
 	public List<Character> sort(Graph unsortedAlphabet) {
 		
+		Stack<Character> stack = new Stack<Character>();
 		List<Character> result = new ArrayList<Character>();
-		Map<Character, VertexState> marked = new HashMap<Character, VertexState>();
+		Map<Character, VertexState> marked = new LinkedHashMap<Character, VertexState>();
 		
 		for (Character c : unsortedAlphabet.getContent().keySet()) {
 			marked.put(c, VertexState.WHITE);
@@ -63,9 +65,12 @@ public class Alphabet {
 		
 		for (Character c : marked.keySet()) {
 			if (marked.get(c) == VertexState.WHITE) {
-				this.depthFirstSearch(unsortedAlphabet, marked, result, c);
+				this.depthFirstSearch(unsortedAlphabet, marked, stack, c);
 			}
 		}
+		
+		while (!stack.isEmpty())
+			result.add(stack.pop());
 		
 		return result;
 	}
@@ -77,7 +82,7 @@ public class Alphabet {
 	 * @param result
 	 * @param c
 	 */
-	public void depthFirstSearch(Graph unsortedAlphabet, Map<Character, VertexState> marked, List<Character>result, char c){
+	public void depthFirstSearch(Graph unsortedAlphabet, Map<Character, VertexState> marked, Stack<Character>result, char c){
 		marked.put(c, VertexState.GREY);
 		for (Character neighbour : unsortedAlphabet.getContent().get(c)) {
 			if (marked.get(neighbour) == VertexState.WHITE) {
@@ -112,7 +117,9 @@ public class Alphabet {
 		for (; i < Math.min(sizeWord1, sizeWord2); i++) {
 			char charWord1 = word1.charAt(i);
 			char charWord2 = word2.charAt(i);
-			firstDifference = this.compareChar(charWord1, charWord2, firstDifference);
+			if (!this.compareChar(charWord1, charWord2, firstDifference)) {
+				firstDifference = false;
+			}
 		}
 		
 		// the last letters of the longest word has to be part of the alphabet
@@ -130,6 +137,7 @@ public class Alphabet {
 	 * @param firstDifference
 	 */
 	public boolean compareChar(char c1, char c2, boolean firstDifference) {
+		System.out.println(c1+" VS. "+c2);
 		this.unknownAlphabet.addVertex(c1);
 		this.unknownAlphabet.addVertex(c2);
 		

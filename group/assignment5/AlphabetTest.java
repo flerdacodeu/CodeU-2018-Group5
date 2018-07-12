@@ -29,7 +29,7 @@ public class AlphabetTest {
 	public final void sameFirstLetterDictionary() {
 		String[] dictionary = {"act", "aca", "aat", "art" };
 		Alphabet alpha = new Alphabet(dictionary);
-		List<Character> expectedResult = Arrays.asList('c','t','a','r'); //only valid result = c,t,a,r
+		List<Character> expectedResult = Arrays.asList('t','c','a','r');
 		assertEquals(expectedResult, alpha.build());	
 	}
 	
@@ -40,23 +40,25 @@ public class AlphabetTest {
 	public final void hiddenFirstCharacterDictionary() {
 		String[] dictionary = {"aat", "rat", "czt", "cat" };
 		Alphabet alpha = new Alphabet(dictionary);
-		List<Character> expectedResult = Arrays.asList('z','a','r','c', 't');
+		List<Character> expectedResult = Arrays.asList('z','t', 'a','r','c');
 		assertEquals(expectedResult, alpha.build());			
 	}
 	
 	
-	@Test
+	@Test(expected= InvalidDictionaryException.class)
 	public final void invalidDictionary() {
 		String[] dictionary = {"art", "aat", "azt", "art" };
-		assertTrue(false);
+		Alphabet alpha = new Alphabet(dictionary);
+		alpha.build();	
 	}
 	
 	
 	@Test
 	public final void differentLengthWords() {
 		String[] dictionary = {"aat", "raft", "czt", "catym" };
-		//TODO - possible result = z,a,r,c,t,f,m
-		assertTrue(false);
+		Alphabet alpha = new Alphabet(dictionary);
+		List<Character> expectedResult = Arrays.asList('m', 'y', 'z', 'f', 't', 'a', 'r', 'c');
+		assertEquals(expectedResult, alpha.build());
 	}
 	
 	
