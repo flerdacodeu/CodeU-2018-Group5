@@ -42,6 +42,8 @@ public class Alphabet {
 		for (int i = 0; i < dictSize-1 ; i++) {
 			this.compareWords(this.dictionary[i], this.dictionary[i+1]);
 		}
+		
+		this.unknownAlphabet.displayContent();
 		return this.sort(this.unknownAlphabet);
 	}
 	
@@ -110,7 +112,7 @@ public class Alphabet {
 		for (; i < Math.min(sizeWord1, sizeWord2); i++) {
 			char charWord1 = word1.charAt(i);
 			char charWord2 = word2.charAt(i);
-			this.compareChar(charWord1, charWord2, firstDifference);
+			firstDifference = this.compareChar(charWord1, charWord2, firstDifference);
 		}
 		
 		// the last letters of the longest word has to be part of the alphabet
@@ -127,14 +129,15 @@ public class Alphabet {
 	 * @param c2
 	 * @param firstDifference
 	 */
-	public void compareChar(char c1, char c2, boolean firstDifference) {
+	public boolean compareChar(char c1, char c2, boolean firstDifference) {
 		this.unknownAlphabet.addVertex(c1);
 		this.unknownAlphabet.addVertex(c2);
 		
 		if (firstDifference && (c1 != c2)) {
 			this.unknownAlphabet.updateEdge(c1, c2);
-			firstDifference = false;
-		}			
+			return false;
+		}	
+		return true;
 	}
 	
 	/**
