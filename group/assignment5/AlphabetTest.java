@@ -21,7 +21,7 @@ public class AlphabetTest {
 		String[] dictionary = {"act"};
 		Alphabet alpha = new Alphabet(dictionary);
 		List<Character> expectedResult = Arrays.asList('a','c','t');
-		assertEquals(alpha.build(), expectedResult);	
+		assertEquals(expectedResult, alpha.build());	
 	}
 	
 	
@@ -30,7 +30,7 @@ public class AlphabetTest {
 		String[] dictionary = {"act", "aca", "aat", "art" };
 		Alphabet alpha = new Alphabet(dictionary);
 		List<Character> expectedResult = Arrays.asList('c','t','a','r'); //only valid result = c,t,a,r
-		assertEquals(alpha.build(), expectedResult);	
+		assertEquals(expectedResult, alpha.build());	
 	}
 	
 	@Test
@@ -39,8 +39,9 @@ public class AlphabetTest {
 	 */
 	public final void hiddenFirstCharacterDictionary() {
 		String[] dictionary = {"aat", "rat", "czt", "cat" };
-		//TODO - possible result = z,a,r,c,t
-		assertTrue(false);		
+		Alphabet alpha = new Alphabet(dictionary);
+		List<Character> expectedResult = Arrays.asList('z','a','r','c', 't');
+		assertEquals(expectedResult, alpha.build());			
 	}
 	
 	

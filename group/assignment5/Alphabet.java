@@ -1,17 +1,43 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+/**
+ * 
+ * @author sophie
+ *
+ */
 public class Alphabet {
 
 	public String[] dictionary;
 	public Graph unknownAlphabet;
+	public enum VertexState {WHITE, GREY, BLACK};
 	
 	public Alphabet(String[] dictionary) {
 		this.dictionary = dictionary;
 		this.unknownAlphabet = new Graph();
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public List<Character> build() {
 		int dictSize = this.dictionary.length;
+		if (dictSize == 0) {
+			throw new IllegalArgumentException("The dictionary must not be empty");
+		}
+		
+		else if (dictSize == 1) {
+			String uniqueWord = this.dictionary[0];
+			List<Character> result = new ArrayList<Character>();
+			for (int j = 0; j < uniqueWord.length() ; j++) {
+				result.add(uniqueWord.charAt(j));
+			}
+			return result;
+		}
 		
 		for (int i = 0; i < dictSize-1 ; i++) {
 			this.compareWords(this.dictionary[i], this.dictionary[i+1]);
@@ -19,12 +45,54 @@ public class Alphabet {
 		return this.sort(this.unknownAlphabet);
 	}
 	
+	/**
+	 * 
+	 * @param unsortedAlphabet
+	 * @return
+	 */
 	public List<Character> sort(Graph unsortedAlphabet) {
 		
+		List<Character> result = new ArrayList<Character>();
+		Map<Character, VertexState> marked = new HashMap<Character, VertexState>();
+		
+		for (Character c : unsortedAlphabet.getContent().keySet()) {
+			marked.put(c, VertexState.WHITE);
+		}
+		
+		for (Character c : marked.keySet()) {
+			if (marked.get(c) == VertexState.WHITE) {
+				this.depthFirstSearch(unsortedAlphabet, marked, result, c);
+			}
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 
+	 * @param unsortedAlphabet
+	 * @param marked
+	 * @param result
+	 * @param c
+	 */
+	public void depthFirstSearch(Graph unsortedAlphabet, Map<Character, VertexState> marked, List<Character>result, char c){
+		marked.put(c, VertexState.GREY);
+		for (Character neighbour : unsortedAlphabet.getContent().get(c)) {
+			if (marked.get(neighbour) == VertexState.WHITE) {
+				this.depthFirstSearch(unsortedAlphabet, marked, result, neighbour);
+			}
+		}
+		
+		marked.put(c, VertexState.BLACK);
+		result.add(c);
 	}
 	
 
-	
+	/**
+	 * 
+	 * @param word1
+	 * @param word2
+	 */
 	public void compareWords(String word1, String word2) {
 		if (word1.isEmpty() && word2.isEmpty()) {
 			throw new IllegalArgumentException("one of the words is empty");
@@ -53,6 +121,12 @@ public class Alphabet {
 	
 	}
 	
+	/**
+	 * 
+	 * @param c1
+	 * @param c2
+	 * @param firstDifference
+	 */
 	public void compareChar(char c1, char c2, boolean firstDifference) {
 		this.unknownAlphabet.addVertex(c1);
 		this.unknownAlphabet.addVertex(c2);
@@ -63,7 +137,12 @@ public class Alphabet {
 		}			
 	}
 	
-	
+	/**
+	 * 
+	 * @param word
+	 * @param wordSize
+	 * @param i
+	 */
 	public void browseLastLettersOfLongest(String word, int wordSize, int i) {
 			for (; i<wordSize; i++) {
 				this.unknownAlphabet.addVertex(word.charAt(i));
