@@ -61,6 +61,9 @@ public class UnknownAlphabet {
     if (dictionary == null) {
       throw new IllegalArgumentException();
     }
+    if (dictionary.isEmpty()) {
+      return true;
+    }
     Graph graph = listToGraph(dictionary);
     Graph.Result result = graph.detectCycle();
 
