@@ -1,6 +1,12 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Assumptions : 
+ *  - the language of the dictionary can contain any character (of the native char data type)
+ *  - upper/lower case letters are treated differently
+ *  - standard lexicographic ordering
+ */
 public class UnknownAlphabet {
 
   /**
@@ -89,6 +95,19 @@ public class UnknownAlphabet {
       throw new IllegalArgumentException();
     }
     Graph graph = new Graph();
+    addAllCharactersAsVertices(graph, dictionary);
+    extractLexicographicOrder(graph, dictionary);
+    return graph;
+  }
+  
+  /**
+   * Adds all distinct characters of the dictionary language to the graph.
+   *
+   * @param graph the graph where the the distinct characters of the words in the dictionary are added as vertices
+   * @param dictionary the list of words
+   */
+  private void addAllCharactersAsVertices(Graph graph, List<String> dictionary) {
+    assert graph != null && dictionary != null;
     for (String word : dictionary) {
       for (char character : word.toCharArray()) {
         Vertex current = new Vertex(character);
@@ -97,7 +116,17 @@ public class UnknownAlphabet {
         }
       }
     }
+  }
 
+  /**
+   * Extracts the lexicographic order of the characters in the dictionary words.
+   *
+   * The order constraints are represented as directed edges in the given graph.
+   *
+   * @param graph the graph where the edges are added
+   * @param dictionary the list of words
+   */
+  private void extractLexicographicOrder(Graph graph, List<String> dictionary) {
     for (int i = 0; i < dictionary.size() - 1; i++) {
       String currentWord = dictionary.get(i);
       String nextWord = dictionary.get(i + 1);
@@ -121,6 +150,5 @@ public class UnknownAlphabet {
         }
       }
     }
-    return graph;
   }
 }
