@@ -25,11 +25,27 @@ public class UnknownAlphabetTest {
     List<Character> expectedAlphabet = Arrays.asList('q', 'g', 'm');
     assertEquals(expectedAlphabet, alphabet);
   }
+  
+  @Test
+  public void testExtractAlphabet_oneWordDictionary() {
+    UnknownAlphabet unknownAlphabet = new UnknownAlphabet();
+    List<Character> alphabet = unknownAlphabet.extractAlphabet(Arrays.asList("art"));
+    List<Character> expectedAlphabet = Arrays.asList('a', 'r', 't');
+    assertEquals(expectedAlphabet, alphabet);
+  }
 
   @Test(expected = IllegalArgumentException.class)
   public void testExtractAlphabet_nullDictionary() {
     UnknownAlphabet unknownAlphabet = new UnknownAlphabet();
     unknownAlphabet.extractAlphabet(null);
+  }
+  
+  @Test
+  public void testExtractAlphabet_inconsistentDictionary() {
+    UnknownAlphabet unknownAlphabet = new UnknownAlphabet();
+    List<String> dictionary = Arrays.asList("arm", "arcade", "card", "mad");
+    List<Character> alphabet = unknownAlphabet.extractAlphabet(dictionary);
+    assertNull(alphabet);
   }
 
   @Test
@@ -37,6 +53,14 @@ public class UnknownAlphabetTest {
     UnknownAlphabet unknownAlphabet = new UnknownAlphabet();
     List<Character> alphabet = unknownAlphabet.extractAlphabet(Arrays.asList("art", "rat", "cat", "car"));
     List<Character> expectedAlphabet = Arrays.asList('a', 't', 'r', 'c');
+    assertEquals(expectedAlphabet, alphabet);
+  }
+  
+  @Test
+  public void testExtractAlphabet_validDictionary2() {
+    UnknownAlphabet unknownAlphabet = new UnknownAlphabet();
+    List<Character> alphabet = unknownAlphabet.extractAlphabet(Arrays.asList("art", "try","rat", "ray", "cat", "car"));
+    List<Character> expectedAlphabet = Arrays.asList('a', 't', 'r', 'y', 'c');
     assertEquals(expectedAlphabet, alphabet);
   }
 
@@ -52,6 +76,16 @@ public class UnknownAlphabetTest {
     UnknownAlphabet unknownAlphabet = new UnknownAlphabet();
     List<List<Character>> alphabets = unknownAlphabet.extractAllAlphabets(Arrays.asList("a","b","c"));
     List<List<Character>> expectedAlphabets = Arrays.asList(Arrays.asList('a', 'b', 'c'));
+    assertEquals(expectedAlphabets, alphabets);
+  }
+  
+  @Test
+  public void testExtractAllAlphabets_oneWordDictionary() {
+    UnknownAlphabet unknownAlphabet = new UnknownAlphabet();
+    List<List<Character>> alphabets = unknownAlphabet.extractAllAlphabets(Arrays.asList("art"));
+    List<List<Character>> expectedAlphabets = Arrays.asList(Arrays.asList('a', 'r', 't'), Arrays.asList('a', 't', 'r'),
+                                                           Arrays.asList('r', 'a', 't'), Arrays.asList('r', 't', 'a'),
+                                                           Arrays.asList('t', 'a', 'r'), Arrays.asList('t', 'r', 'a'));
     assertEquals(expectedAlphabets, alphabets);
   }
 
@@ -89,6 +123,13 @@ public class UnknownAlphabetTest {
   public void testIsConsistentDictionary_inconsistentDictionary() {
     UnknownAlphabet unknownAlphabet = new UnknownAlphabet();
     List<String> dictionary = Arrays.asList("cat", "talk", "tattoo", "lasagna");
+    assertFalse(unknownAlphabet.isConsistentDictionary(dictionary));
+  }
+  
+  @Test
+  public void testIsConsistentDictionary_inconsistentDictionary1() {
+    UnknownAlphabet unknownAlphabet = new UnknownAlphabet();
+    List<String> dictionary = Arrays.asList("raspberry", "pineapple", "apple", "apricot");
     assertFalse(unknownAlphabet.isConsistentDictionary(dictionary));
   }
 
