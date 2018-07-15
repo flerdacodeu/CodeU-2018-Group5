@@ -27,15 +27,18 @@ public class Graph {
    * Adds a vertex to the graph if it does not already exist in the graph.
    *
    * @param vertex the vertex to be added.
+   * @return true, if the edge was successfully added, false if it already existed
    * @throws IllegalArgumentException if the vertex to be added is null.
    */
-  public void addVertex(Vertex vertex) {
+  public boolean addVertex(Vertex vertex) {
     if (vertex == null) {
       throw new IllegalArgumentException();
     }
     if (!vertices.contains(vertex)) {
       vertices.add(vertex);
+      return true;
     }
+    return false;
   }
 
   /**
@@ -75,6 +78,13 @@ public class Graph {
         if (neighbour.getInbound() == 0) {
           processNext.add(neighbour);
         }
+      }
+    }
+    
+    // no vertex inbound should be null at this point if the graph is acyclic
+    for (Vertex vertex : vertices) {
+      if (vertex.getInbound() != 0) {
+        return null;
       }
     }
     return order;
@@ -138,11 +148,20 @@ public class Graph {
     if (vertex1 == null || vertex2 == null) {
       throw new IllegalArgumentException();
     }
-    addVertex(vertex1);
-    addVertex(vertex2);
-
-    getVertex(vertex2.getValue()).incrementInbound();
-    getVertex(vertex1.getValue()).addNeighbour(getVertex(vertex2.getValue()));
+    
+    boolean addedVertex1 = addVertex(vertex1);
+    boolean addedVertex2 = addVertex(vertex2);
+    if (!addedVertex1) {
+      vertex1 = getVertex(vertex1.getValue());
+    }
+    if (!addedVertex2) {
+      vertex2 = getVertex(vertex2.getValue());
+    }
+    
+    if (!vertex1.getNeighbours().contains(vertex2)) {
+      getVertex(vertex2.getValue()).incrementInbound();
+      getVertex(vertex1.getValue()).addNeighbour(getVertex(vertex2.getValue()));
+    }
   }
 
   /**
@@ -157,19 +176,7 @@ public class Graph {
     Result result = new Result();
     Stack<Vertex> stack = new Stack<>();
     ArrayList<Vertex> visited = new ArrayList<>();
-    ArrayList<Vertex> startNodes = new ArrayList<>();
-    for (Vertex v : vertices) {
-      if (v.getInbound() == 0) {
-        startNodes.add(v);
-      }
-    }
-
-    if (startNodes.isEmpty()) {
-      result.setHasCycle(true);
-      return result;
-    }
-
-    for (Vertex startVertex : startNodes) {
+    for (Vertex vertex : vertices) {
       detectCycleUtil(startVertex, stack, visited, result);
     }
     return result;
@@ -191,10 +198,11 @@ public class Graph {
       for (Vertex neighbour : currentVertex.getNeighbours()) {
         detectCycleUtil(neighbour, ancestors, visited, result);
       }
+      ancestors.pop();
     } else {
       if (ancestors.contains(currentVertex)) {
         result.setHasCycle(true);
-        result.setPair(currentVertex, ancestors.pop());
+        result.setPair(currentVertex, ancestors.peek());
       }
     }
   }
