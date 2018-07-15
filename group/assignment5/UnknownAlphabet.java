@@ -13,7 +13,7 @@ public class UnknownAlphabet {
    * Computes an alphabet that is consistent with the given dictionary.
    *
    * @param dictionary list of words in lexicographic order
-   * @return one possible alphabet consistent with the dictionary
+   * @return one possible alphabet consistent with the dictionary or null if the dictionary is inconsistent
    */
   public List extractAlphabet(List<String> dictionary) {
     if (dictionary == null) {
@@ -25,6 +25,7 @@ public class UnknownAlphabet {
     }
 
     Graph graph = listToGraph(dictionary);
+    // topological sort returns null when the dictionary is inconsistent
     return graph.topologicalSort();
   }
 
