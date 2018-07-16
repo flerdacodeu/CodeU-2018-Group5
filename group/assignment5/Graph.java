@@ -26,9 +26,9 @@ public class Graph {
   /**
    * Adds a vertex to the graph if it does not already exist in the graph.
    *
-   * @param vertex the vertex to be added.
+   * @param vertex the vertex to be added
    * @return true, if the edge was successfully added, false if it already existed
-   * @throws IllegalArgumentException if the vertex to be added is null.
+   * @throws IllegalArgumentException if the vertex to be added is null
    */
   public boolean addVertex(Vertex vertex) {
     if (vertex == null) {
@@ -57,7 +57,13 @@ public class Graph {
   }
 
   /**
-   * Topologically sorts the vertices using Kahn's non-recursive algorithm.
+   * Topologically sorts the vertices using Kahn's algorithm.
+   *
+   * Kahn's algorithm works as follows:
+   * - iterates initially over all vertices and adds all vertices that have zero incoming edges to a queue
+   * - while the queue is not empty, the first vertex is removed from the queue and added to the sorted vertices
+   * - then the algorithm iterates over all the neighbours of the vertex, decrements their inbound and adds them
+   * to the queue if their inbound is 0
    *
    * @return one of the possible topological orders of the vertices.
    */
@@ -81,11 +87,10 @@ public class Graph {
       }
     }
     
-    // no vertex inbound should be null at this point if the graph is acyclic
-    for (Vertex vertex : vertices) {
-      if (vertex.getInbound() != 0) {
-        return null;
-      }
+    // the size of the list of sorted arrays should be equal to the number of vertices in the graph
+    // if the graph is acyclic
+    if (order.size() != vertices.size()) {
+      return null;
     }
     return order;
   }
@@ -105,6 +110,16 @@ public class Graph {
 
   /**
    * Topologically sorts the vertices using recursion.
+   *
+   * Algorithm works as follows :
+   * - iterates over all vertices looking for vertices that have not been visited and have no incoming edges
+   * - once such vertex is found, it is marked as visited, added to the current sorting and the inbounds of 
+   * its neighbours are decremented by one
+   * - the previous steps are repeated until all vertices have been added to the current sorting; when this 
+   * is the case, one possible sorting has been found
+   * - in order to find all topological sortings, backtracking is used : when the method returns from the 
+   * recursive call, the vertex that was added when the method was called is marked unvisited, is removed 
+   * from the topological order and all its neighbours have their inbound incremented
    *
    * @param allOrders all possible topological orders of the vertices.
    * @param currentOrder the topological order that the algorithm currently builds
@@ -209,8 +224,9 @@ public class Graph {
 
   /**
    * Wrapper class that contains the result of the algorithm that detects cycles in the graph.
-   * The class has a filed that indicates if a cycle was found and a pair of vertices : the vertex
-   * where the cycle was detected and its closest ancestor.
+   * The class has a field that indicates if a cycle was found and a pair of vertices: the vertex
+   * where the cycle was detected and its closest ancestor in the recursion stack. 
+   * The pair indicates which edge should be deleted to remove the cycle. 
    */
   class Result {
     private boolean hasCycle;
