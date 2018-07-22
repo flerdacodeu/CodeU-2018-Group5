@@ -131,25 +131,17 @@ public class UnknownAlphabet {
     for (int i = 0; i < dictionary.size() - 1; i++) {
       String currentWord = dictionary.get(i);
       String nextWord = dictionary.get(i + 1);
-
-      // if two consecutive words have different letters then an edge from the first letter of
-      // the first word to the first letter of the second word is added
-      if (currentWord.charAt(0) != nextWord.charAt(0)) {
-        graph.addDirectedEdge(new Vertex(currentWord.charAt(0)), new Vertex(nextWord.charAt(0)));
-      } else {
-        // if two consecutive words have differing first letters, then the algorithm iterates through
-        // the words until different letters are found on the same position and then creates an edge
-        int size = currentWord.length() <= nextWord.length() ? currentWord.length() : nextWord.length();
-        int index = 1;
-        while (index < size && currentWord.charAt(index) == nextWord.charAt(index)) {
-          index++;
-        }
-        if (index == size) {
-          continue;
-        } else {
-          graph.addDirectedEdge(new Vertex(currentWord.charAt(index)), new Vertex(nextWord.charAt(index)));
-        }
+      
+      int index = 0;
+      
+      //while loop lasts until different characters are found
+      while(index < currentWord.length() && index < nextWord.length() && currentWord.charAt(index) == nextWrod.charAt(index)){
+        ++index;
       }
+      //if it is not the end of the words and at index possition there are two characters, we create a connection between them
+      if(index < currentWord.length() && index < nextWord.length()){
+        graph.addDirectedEdge(new Vertex(currentWord.charAt(index)), new Vertex(nextWord.charAt(index)));
+      }       
     }
   }
 }
