@@ -101,6 +101,10 @@ public class UnknownAlphabet {
       throw new IllegalArgumentException();
     }
 
+    if (dictionary.isEmpty()) {
+      return dictionary;
+    }
+
     Graph alphabetGraph = listToGraph(dictionary);
     Graph.Result detectCycleResult = alphabetGraph.detectCycle();
     while (detectCycleResult.hasCycle()) {

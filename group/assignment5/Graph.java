@@ -192,7 +192,7 @@ public class Graph {
     Stack<Vertex> stack = new Stack<>();
     ArrayList<Vertex> visited = new ArrayList<>();
     for (Vertex vertex : vertices) {
-      detectCycleUtil(startVertex, stack, visited, result);
+      detectCycleUtil(vertex, stack, visited, result);
     }
     return result;
   }
