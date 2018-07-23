@@ -178,8 +178,7 @@ public class UnknownAlphabet {
           secondWordIndex++;
         }
 
-        if (firstWordIndex < firstWord.length() && secondWordIndex < secondWord.length() 
-            && firstWord.charAt(firstWordIndex) != secondWord.charAt(secondWordIndex)) {
+        if (firstWordIndex < firstWord.length() && secondWordIndex < secondWord.length()) {
           if ((firstWord.charAt(firstWordIndex) == firstVertex.getValue() 
                && secondWord.charAt(secondWordIndex) == secondVertex.getValue())) {
             foundFirstBeforeSecond = true;
