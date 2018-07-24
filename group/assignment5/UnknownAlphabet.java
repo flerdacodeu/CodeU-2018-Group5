@@ -14,6 +14,8 @@ public class UnknownAlphabet {
   /**
    * Computes an alphabet that is consistent with the given dictionary.
    *
+   * Time complexity: O(m*n)
+   *
    * @param dictionary list of words in lexicographic order
    * @return one possible alphabet consistent with the dictionary or null if the dictionary is inconsistent
    */
@@ -119,6 +121,8 @@ public class UnknownAlphabet {
   /**
    * Removes the minimum number of words from an inconsistent dictionary to make it consistent.
    *
+   * Time complexity: O(n*m), where n is the number of words in the dictionary and m is the average length of a word.
+   *
    * @param cyclePair the vertices that form the edge that needs to be removed
    * @param dictionary the inconsistent dictionary of interest
    * @param graph the graph created from the given dictionary
@@ -198,6 +202,11 @@ public class UnknownAlphabet {
    * Creates a graph that has all the letters of the dictionary words as vertices and
    * the lexicographic order requirements as edges.
    *
+   * Time complexity: 
+   *    addAllCharactersAsVertices: O(n*m)
+   *    extractLexicographicOrder: O(n*m)
+   *    => O(n*m), where n is the number of words in the dictionary and m is the average length of a word.
+   *
    * @param dictionary the dictionary that contains the words which impose the lexicographic order.
    * @return the graph that was created from the dictionary
    * @throws IllegalArgumentException if the dictionary of words is null
@@ -214,6 +223,8 @@ public class UnknownAlphabet {
   
   /**
    * Adds all distinct characters of the dictionary language to the graph.
+   *
+   * Time complexity: O(n*m), where n is the number of words in the dictionary and m is the average length of a word.
    *
    * @param graph the graph where the the distinct characters of the words in the dictionary are added as vertices
    * @param dictionary the list of words
@@ -234,6 +245,8 @@ public class UnknownAlphabet {
    * Extracts the lexicographic order of the characters in the dictionary words.
    *
    * The order constraints are represented as directed edges in the given graph.
+   *
+   * Time complexity: O(n*m), where n is the number of words in the dictionary and m is the average length of a word.
    *
    * @param graph the graph where the edges are added
    * @param dictionary the list of words
