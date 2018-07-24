@@ -1,15 +1,15 @@
-## Assignment 6
+# Assignment 6
 
-## Requirements
+# Requirements
 
-# Optional Challenges
+## Optional Challenges
 | Criteria  | Who? | Done  |  In Progress |   Not started | 
 |---|---|---|---|---|
 |  How many optional challenges? | The anonymous alpaca |  | | X |
 |  How elegant the solution is? | The anonymous alpaca |  | | X |
 
 
-# Testing
+## Testing
 | Criteria  | Who? | Done  |  In Progress |   Not started | 
 |---|---|---|---|---|
 |  Does the solution provide test cases? | The anonymous alpaca |  | | X |
@@ -18,14 +18,14 @@
 |  Do tests check that the results are correct? | The anonymous alpaca |  | | X |
 
 
-# Following the style-guide
+## Following the style-guide
 | Criteria  | Who? | Done  |  In Progress |   Not started | 
 |---|---|---|---|---|
 |  How well does the solution adhere to the style guide? | The anonymous alpaca |  | | X |
 |  Does the solution use the correct language coding conventions? | The anonymous alpaca |  | | X |
 
 
-# Code health
+## Code health
 | Criteria  | Who? | Done  |  In Progress |   Not started | 
 |---|---|---|---|---|
 |  How well is the code structured? | The anonymous alpaca |  | | X |
@@ -35,7 +35,7 @@
 |  How easy is the code to reuse in a larger project? | The anonymous alpaca |  | | X |
 
 
-# Group Code review
+## Group Code review
 | Criteria  | Who? | Done  |  In Progress |   Not started | 
 |---|---|---|---|---|
 |  How many group members participated in creating a group solution? | The anonymous alpaca |  | | X |
@@ -43,13 +43,13 @@
 
 
 
-## Useful links
+# Useful links
 
 - **Design doc** available @ https://docs.google.com/document/d/1vmBp7ZkJAiVAxrCmlbfCpJRcmaE_bvIg7XJ8PXaKjVM/edit
 
 - **Java style guide** available @ https://google.github.io/styleguide/javaguide.html 
 
-## How to submit
+# How to submit
 
 Please submit assignment 6 to this directory.
 
