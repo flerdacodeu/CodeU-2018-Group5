@@ -64,6 +64,8 @@ public class Graph {
    * - while the queue is not empty, the first vertex is removed from the queue and added to the sorted vertices
    * - then the algorithm iterates over all the neighbours of the vertex, decrements their inbound and adds them
    * to the queue if their inbound is 0
+   * 
+   * Time complexity: O(v+e), where v is the number of vertices and e is the number of edges
    *
    * @return one of the possible topological orders of the vertices.
    */
@@ -184,6 +186,8 @@ public class Graph {
    *
    * The algorithm finds one cycle only even if the graph has more cycles.
    *
+   * Time complexity: O(v+e), where v is the number of vertices and e is the number of edges
+   *
    * @return a Result wrapper class that indicates the existence of cycles and
    * the vertex (together with its closest ancestor) where the cycle was detected
    */
@@ -193,6 +197,9 @@ public class Graph {
     ArrayList<Vertex> visited = new ArrayList<>();
     for (Vertex vertex : vertices) {
       detectCycleUtil(vertex, stack, visited, result);
+      if (result.hasCycle()) {
+        return result;
+      }
     }
     return result;
   }
