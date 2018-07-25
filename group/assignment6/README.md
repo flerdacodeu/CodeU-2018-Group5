@@ -49,6 +49,8 @@
 
 - **Design doc** available @ https://docs.google.com/document/d/1vmBp7ZkJAiVAxrCmlbfCpJRcmaE_bvIg7XJ8PXaKjVM/edit
 
+- **Notes taken during our hangouts sessions for assignment 6** available @ https://docs.google.com/document/d/1W_c200stLSvBb09CztYp97sHnbv1bBNniuQtIyDlz2Q/edit?usp=sharing
+
 - **Java style guide** available @ https://google.github.io/styleguide/javaguide.html 
 
 # How to submit
