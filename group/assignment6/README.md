@@ -3,10 +3,12 @@
 # Requirements
 
 ## Optional Challenges
-| Criteria  | Who? | Done  |  In Progress |   Not started | 
+| Criteria  | Who? | Done  |  In Progress |   Not started | Elegant? |
 |---|---|---|---|---|
-|  How many optional challenges? | The anonymous alpaca |  | | X |
-|  How elegant the solution is? | The anonymous alpaca |  | | X |
+|  Optional challenge #1 | The anonymous alpaca |  | | X ||
+|  Optional challenge #2 | The anonymous alpaca |  | | X ||
+|  Optional challenge #3 | The anonymous alpaca |  | | X ||
+|  Optional challenge #4 | The anonymous alpaca |  | | X ||
 
 
 ## Testing
