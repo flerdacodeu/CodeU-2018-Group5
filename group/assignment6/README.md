@@ -4,7 +4,7 @@
 
 ## Optional Challenges
 | Criteria  | Who? | Done  |  In Progress |   Not started | Elegant? |
-|---|---|---|---|---|
+|---|---|---|---|---|---|
 |  Optional challenge #1 | The anonymous alpaca |  | | X ||
 |  Optional challenge #2 | The anonymous alpaca |  | | X ||
 |  Optional challenge #3 | The anonymous alpaca |  | | X ||
