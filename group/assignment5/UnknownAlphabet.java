@@ -166,12 +166,13 @@ public class UnknownAlphabet {
    */
   private List<String> filterDictionaryWords(Vertex firstVertex, Vertex secondVertex, List<String> dictionary) {
     Set<String> newDictionary = new LinkedHashSet<>();
-
-    for (int i = 0; i < dictionary.size(); i++) {
+    
+    int dictionarySize = dictionary.size();
+    for (int i = 0; i < dictionarySize; i++) {
       boolean foundFirstBeforeSecond = false;
       String firstWord = dictionary.get(i);
 
-      for (int j = i + 1; j < dictionary.size(); j++) {
+      for (int j = i + 1; j < dictionarySize; j++) {
         int firstWordIndex = 0;
         int secondWordIndex = 0;
         String secondWord = dictionary.get(j);
@@ -252,7 +253,8 @@ public class UnknownAlphabet {
    * @param dictionary the list of words
    */
   private void extractLexicographicOrder(Graph graph, List<String> dictionary) {
-    for (int i = 0; i < dictionary.size() - 1; i++) {
+    int dictionarySize = dictionary.size();
+    for (int i = 0; i < dictionarySize - 1; i++) {
       String currentWord = dictionary.get(i);
       String nextWord = dictionary.get(i + 1);
 
