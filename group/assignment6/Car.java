@@ -4,6 +4,7 @@
 public class Car {
 
   private final int identifier;
+  private final int destinationSlot;
 
   public Car(int identifier) {
     assert identifier > 0;
