@@ -1,4 +1,5 @@
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.BiMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +10,11 @@ import java.util.List;
  * - car and parking space identifiers are non-zero positive integers
  */
 public class State {
-  // the key of the map is the unique identifier of a car
-  // the value of the map is the identifier of a parking space
   private HashBiMap<ParkingSpace, Car> parkingLotState;
+  private BiMap<Car, ParkingSpace> parkingLotStateInverse;
+  private int numberOfParkingSpaces;
   private static final int EMPTY = -1;
   private static final Car NO_CAR = null;
-  private int numberOfParkingSpaces;
 
   // the elements of carsIdentifiers indicate the order in which the cars are parked in the parking spaces
   public State(List<Integer> carsIdentifiers) {
@@ -31,6 +31,7 @@ public class State {
       parkingLotState.put(parkingSpace, car);
       parkingSpaceIdentifier++;
     }
+    parkingLotStateInverse = parkingLotState.inverse();
   }
 
   public List<ParkingSpace> getAllParkingSpaces() {
@@ -38,11 +39,11 @@ public class State {
   }
 
   public ParkingSpace getParkingSpaceOfCar(Car car) {
-    return parkingLotState.inverse().get(car);
+    return parkingLotStateInverse.get(car);
   }
 
   public ParkingSpace getEmptyParkingSpace() {
-    return parkingLotState.inverse().get(NO_CAR);
+    return parkingLotStateInverse.get(NO_CAR);
   }
 
   public Car getCarParkedInSpace(ParkingSpace parkingSpace) {
@@ -50,11 +51,12 @@ public class State {
   }
 
   public void parkCarInSpace(Car car, ParkingSpace parkingSpace) {
+    emptyParkingSpace(getParkingSpaceOfCar(car));
     parkingLotState.forcePut(parkingSpace, car);
   }
 
-  public void emptyParkingSpace(ParkingSpace parkingSpace) {
-    parkingLotState.forcePut(parkingSpace, null);
+  private void emptyParkingSpace(ParkingSpace parkingSpace) {
+    parkingLotState.forcePut(parkingSpace, NO_CAR);
   }
 
   public int getNumberOfParkingSpaces() {
