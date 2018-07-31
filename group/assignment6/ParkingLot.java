@@ -129,57 +129,7 @@ public class ParkingLot {
     
     return sequenceOfMoves;
   }
-  /*
-   * Another algorithm using empty slot and checking which car should belong there
-   * Special case that we need to be aware of is when empty space should be empty, but cars are
-   * still unsorted, EXAMPLE:
-   * X-empty
-   * wanted: A B C D X
-   * current: B A C D X
-   */
-  public List<Move> rearrangeCars2(State startState, State endState) {
-	    //TODO: implement algorithm
-	    List<Move> sequenceOfMoves = new ArrayList<>();
-	    
-	    ParkingSpace emptySlot = startState.getEmptyParkingSpace();
-	    ParkingSpace slotEmptyAfterSort = endState.getEmptyParkingSpace();
-	    Set<Car> unprocessedCars = new HashSet<Car>();
-	    
-	    for(ParkingSpace slot: startState.getAllParkingSpaces()) {
-	    	Car currentCar = startState.getCarParkedInSpace(slot);
-	    	Car carInDestination = endState.getCarParkedInSpace(slot);
-	    	//if it is not an empty car and it is not in its right place
-	    	if(currentCar!=null && currentCar!=carInDestination) {
-	    		unprocessedCars.add(currentCar);
-	    	}
-	    }
-	    //while empty slot is not in its right place -> we need to fill it with wanted car
-	    while(emptySlot!=slotEmptyAfterSort) {
-	    	//we move car to an empty slot
-	    	Car car = endState.getCarParkedInSpace(emptySlot);
-	    	ParkingSpace previousSlot = startState.getParkingSpaceOfCar(car);
-	    	Move movement = new Move(car, previousSlot, emptySlot);
-	    	//we add the movement to the sequence
-	    	sequenceOfMoves.add(movement);
-	    	//remove car from unprocessedCars set
-	    	unprocessedCars.remove(car);
-	    	emptySlot = previousSlot;
-	    }
-	    //by now the cars should be sorted, unless we reach the special case mentioned above
-	    while(!unprocessedCars.isEmpty()) {
-	    	//we still have some cars to be sorted
-	    	//Options:
-	    	//1. wrap this while around the while above and randomly switch one of the 
-	    	//unprocessed cars to an empty space and continue
-	    	//2. use first algorithm, so the while loop would act only as optimisation, but not 
-	    	//necessary solve the problem
-	    	//3. there are many other ways to solve it, but it seems to be not the very best
-	    	//solution
-	    	
-	    }
-	    
-	    return sequenceOfMoves;
-  }
+  
   /*
    * Cycle sort algorithm
    */
