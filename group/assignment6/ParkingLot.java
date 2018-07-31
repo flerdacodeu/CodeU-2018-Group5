@@ -20,7 +20,7 @@ public class ParkingLot {
     }
 
     List<Move> sequenceOfMoves = new ArrayList<>();
-    rearrangeCars(startState, endState, sequenceOfMoves);
+    rearrangeCarsHelper(startState, endState, sequenceOfMoves);
     return sequenceOfMoves;
   }
 
@@ -40,7 +40,8 @@ public class ParkingLot {
    * @param endState the final state of the parking space
    * @param sequenceOfMoves the sequence of moves that rearrange the cars
    */
-  private void rearrangeCars(State currentState, State endState, List<Move> sequenceOfMoves) {
+  private void rearrangeCarsHelper(State currentState, State endState, List<Move> sequenceOfMoves) {
+    assert currentState != null && endState != null;
     ParkingSpace emptySpaceCurrentState = currentState.getEmptyParkingSpace();
     ParkingSpace emptySpaceEndState = endState.getEmptyParkingSpace();
 
@@ -50,8 +51,8 @@ public class ParkingLot {
       if (carInWrongSpace == NO_CAR) {
         return;
       }
-      currentState.parkCarInSpace(carInWrongSpace, emptySpaceCurrentState);
       ParkingSpace carSpace = currentState.getParkingSpaceOfCar(carInWrongSpace);
+      currentState.parkCarInSpace(carInWrongSpace, emptySpaceCurrentState);
       sequenceOfMoves.add(new Move(carInWrongSpace, carSpace, emptySpaceCurrentState));
     }
     while (!emptySpaceCurrentState.equals(emptySpaceEndState)) {
@@ -62,7 +63,7 @@ public class ParkingLot {
       emptySpaceCurrentState = currentState.getEmptyParkingSpace();
       emptySpaceEndState = endState.getEmptyParkingSpace();
     }
-    rearrangeCars(currentState, endState, sequenceOfMoves);
+    rearrangeCarsHelper(currentState, endState, sequenceOfMoves);
   }
 
   /**
@@ -74,6 +75,7 @@ public class ParkingLot {
    * @return the first car that is parked in the wrong place, or null if no such car is found
    */
   private Car getFirstCarInWrongSpace(State currentState, State endState) {
+    assert currentState != null && endState != null;
     for (ParkingSpace space : currentState.getAllParkingSpaces()) {
       Car currentCar = currentState.getCarParkedInSpace(space);
       Car expectedCar = endState.getCarParkedInSpace(space);
