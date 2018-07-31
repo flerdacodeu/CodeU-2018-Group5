@@ -6,7 +6,7 @@ public class ParkingLot {
 	
   /**
    * Generates a sequence of moves needed to rearrange the cars from a given start state into
-   * a given end state.
+   * a given end state (optimal algorithm that uses fewer moves).
    *
    * @param startState the initial state of the parking space
    * @param endState the final state of the parking space
@@ -87,48 +87,42 @@ public class ParkingLot {
     return NO_CAR;
   }
 	
-	
-	
-	/*
-	 * Iteration algorithm, we go through all slots and rearrange cars by emptying
-	 * destination slot and moving car there
-	 */
-  public List<Move> rearrangeCars1(State startState, State endState) {
-    //TODO: implement algorithm
+	/**
+   * Generates a sequence of moves needed to rearrange the cars from a given start state into
+   * a given end state (using the straightforward algorithm).
+   *
+   * @param currentState the initial state of the parking space
+   * @param endState the final state of the parking space
+   * @return the sequence of moves that rearrange the cars
+   * @throws IllegalArgumentException if the start state or the end state are null
+   */
+  public List<Move> rearrangeCarsStraightforward(State currentState, State endState) {
+    if (currentState == null || endState == null) {
+      throw new IllegalArgumentException();
+    }
     List<Move> sequenceOfMoves = new ArrayList<>();
-    
-    ParkingSpace emptySlot = startState.getEmptyParkingSpace();
-    
-    for(ParkingSpace slot: startState.getAllParkingSpaces()) {
-    	if(startState.getCarParkedInSpace(slot)!=endState.getCarParkedInSpace(slot)) {
-    		//if destination slot is occupied, we move car from the occupied slot to the empty one 
-    		//and then move the first car to the destination slot
-    		Car currentCar = startState.getCarParkedInSpace(slot);
-    		ParkingSpace destinationSlot = endState.getParkingSpaceOfCar(currentCar);
-    		Car carInDestinationSlot = startState.getCarParkedInSpace(destinationSlot);
-    		if(carInDestinationSlot!=null) {
+    List<ParkingSpace> parkingSpaces = currentState.getAllParkingSpaces();
+    for(ParkingSpace currentSpace : parkingSpaces) { 
+      Car currentCar = currentState.getCarParkedInSpace(currentSpace);
+      ParkingSpace destinationSpace = endState.getParkingSpaceOfCar(currentCar);
+      if(!currentSpace.equals(destinationSpace)) {
+    	  //if destination slot is occupied, we move car from the occupied slot to the empty one 
+    	  //and then move the first car to the destination slot
+    		Car carInDestinationSpace = currentState.getCarParkedInSpace(destinationSpace);
+    		if(carInDestinationSpace != NO_CAR) {
+           ParkingSpace emptySpace = currentState.getEmptyParkingSpace();
     			//remove car from destination slot
-    			Move movement = new Move(carInDestinationSlot, destinationSlot, emptySlot);
-    			sequenceOfMoves.add(movement);
+          currentState.parkCarInSpace(carInDestinationSpace, emptySpace);			
+    			sequenceOfMoves.add(new Move(carInDestinationSpace, destinationSpace, emptySpace));
     			//move currentCar to the destination
-    			movement = new Move(currentCar, slot, destinationSlot);
-    			sequenceOfMoves.add(movement);
-    			//change the state
-    			startState.parkCarInSpace(carInDestinationSlot, emptySlot);
-    			startState.parkCarInSpace(currentCar, destinationSlot);
-    			//make the current slot empty
-    			emptySlot = slot;
-    		}
-    		//if cars destination slot is not empty, we move the car to that slot and make
-    		//cars previous slot empty
-    		else{
-    			Move movement = new Move(currentCar, slot, emptySlot);
-    			emptySlot = slot;
-    			sequenceOfMoves.add(movement);
+          currentState.parkCarInSpace(currentCar, destinationSpace);		
+    			sequenceOfMoves.add(new Move(currentCar, currentSpace, destinationSpace));
+        } else {
+          currentState.parkCarInSpace(currentCar, destinationSpace);
+    			sequenceOfMoves.add(new Move(currentCar, currentSpace, destinationSpace));
     		}	
     	}
     }
-    
     return sequenceOfMoves;
   }
   
