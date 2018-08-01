@@ -27,9 +27,16 @@ public class ParkingLotTest {
 
 	@Test
 	public void testRearrangeCars_emptyParkingSlot() {
-		//should raise an exception if no car in the parking slot
-		fail("Not yet implemented");
+		//should raise an exception if no car in the parking slot?
+		State startState = new State(Arrays.asList(-1,-1,-1,-1));
+		State endState = new State(Arrays.asList(-1,-1,-1,-1));
+		ParkingLot lot = new ParkingLot();
+		List<Move> actualResult = lot.rearrangeCars(startState, endState);
+		List<Move> expectedResult = new ArrayList<Move>(); 
+		assertEquals(expectedResult, actualResult);
 	}
+	
+	
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testRearrangeCars_nullStartState() {
@@ -92,14 +99,22 @@ public class ParkingLotTest {
 	}
 	
 	@Test
-	public void testRearrangeCars_inconsistentStates() {
-		//should raise an exception if the start and end states are inconsistent
-		// possible inconsistencies:
-		//- not the same amount of parking spots
-		//- same amount of spots but non-matching spot identifiers btwn the states
-		//- not the same amount of cars 
-		//- same amount of cars but non-matching car identifiers btwn the states
-		//(so potentially 4 test cases for 4 inconsistent states)
+	public void testRearrangeCars_inconsistentNumberOfCars() {
+		fail("Not yet implemented");
+	}
+	
+	@Test
+	public void testRearrangeCars_inconsistentNumberOfSpaces() {
+		fail("Not yet implemented");
+	}
+	
+	@Test
+	public void testRearrangeCars_inconsistentCarIdentifiers() {
+		fail("Not yet implemented");
+	}
+	
+	@Test
+	public void testRearrangeCars_inconsistentSpaceIdentifiers() {
 		fail("Not yet implemented");
 	}
 
