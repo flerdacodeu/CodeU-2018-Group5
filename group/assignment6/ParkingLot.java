@@ -140,7 +140,7 @@ public class ParkingLot {
       Car currentCar = startState.getCarParkedInSpace(slot);
       Car carInDestination = endState.getCarParkedInSpace(slot);
       //if it is not an empty car and it is not in its right place
-      if (currentCar != null && currentCar != carInDestination) {
+      if (currentCar != null && !currentCar.equals(carInDestination)) {
         unprocessedCars.add(currentCar);
       }
     }
@@ -157,6 +157,7 @@ public class ParkingLot {
       Iterator<Car> iterator = unprocessedCars.iterator();
       Car randomCar = iterator.next();
       ParkingSpace previousSlot = startState.getParkingSpaceOfCar(randomCar);
+      startState.parkCarInSpace(randomCar, emptySlot);
       Move movement = new Move(randomCar, previousSlot, emptySlot);
       sequenceOfMoves.add(movement);
 
@@ -171,7 +172,7 @@ public class ParkingLot {
     ParkingSpace emptySlot = startState.getEmptyParkingSpace();
     ParkingSpace endEmptySlot = endState.getEmptyParkingSpace();
 
-    while (emptySlot != endEmptySlot) {
+    while (!emptySlot.equals(endEmptySlot)) {
       //we move car to an empty slot
       Car car = endState.getCarParkedInSpace(emptySlot);
       ParkingSpace previousSlot = startState.getParkingSpaceOfCar(car);
