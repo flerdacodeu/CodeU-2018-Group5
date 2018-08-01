@@ -31,14 +31,20 @@ public class ParkingLotTest {
 		fail("Not yet implemented");
 	}
 	
-	@Test
+	@Test(expected=IllegalArgumentException.class)
 	public void testRearrangeCars_nullStartState() {
-		fail("Not yet implemented");
+		State startState = null;
+		State endState = new State(Arrays.asList(1,2,-1,3));
+		ParkingLot lot = new ParkingLot();
+		lot.rearrangeCars(startState, endState);
 	}
 	
-	@Test
+	@Test(expected=IllegalArgumentException.class)
 	public void testRearrangeCars_nullEndState() {
-		fail("Not yet implemented");
+		State startState = new State(Arrays.asList(1,2,-1,3));
+		State endState = null;
+		ParkingLot lot = new ParkingLot();
+		lot.rearrangeCars(startState, endState);
 	}
 	
 	@Test
