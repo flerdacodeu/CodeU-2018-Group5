@@ -27,7 +27,7 @@ public class ParkingLotTest {
 
 	@Test
 	public void testRearrangeCars_emptyParkingSlot() {
-		//should raise an exception if no car in the parking slot?
+		//TODO-should raise an exception if no car in the parking slot?
 		State startState = new State(Arrays.asList(-1,-1,-1,-1));
 		State endState = new State(Arrays.asList(-1,-1,-1,-1));
 		ParkingLot lot = new ParkingLot();
@@ -98,50 +98,60 @@ public class ParkingLotTest {
 		assertEquals(expectedResult, actualResult);
 	}
 	
-	@Test
-	public void testRearrangeCars_inconsistentNumberOfCars() {
-		fail("Not yet implemented");
+	@Test(expected=IllegalArgumentException.class)
+	public void testRearrangeCars_moreThanOneEmptySpace() {
+		//TODO - should definitely raise an exception
+		State startState = new State(Arrays.asList(1,2,-1,3,-1));
+		State endState = new State(Arrays.asList(3,1,-1,2,-1));
+		ParkingLot lot = new ParkingLot();
+		lot.rearrangeCars(startState, endState);
 	}
 	
+	
 	@Test
-	public void testRearrangeCars_inconsistentNumberOfSpaces() {
-		fail("Not yet implemented");
+	public void testRearrangeCars_inconsistentNumberOfSpacesAndCars() {
+		//TODO - should definitely raise an exception
+		State startState = new State(Arrays.asList(1,2,-1,3,4));
+		State endState = new State(Arrays.asList(3,1,-1,2));
+		ParkingLot lot = new ParkingLot();
+		lot.rearrangeCars(startState, endState);
+		fail("should raise an exception");
 	}
 	
 	@Test
 	public void testRearrangeCars_inconsistentCarIdentifiers() {
-		fail("Not yet implemented");
+		//TODO - should definitely raise an exception
+		State startState = new State(Arrays.asList(1,2,-1,3));
+		State endState = new State(Arrays.asList(3,1,4,-1));
+		ParkingLot lot = new ParkingLot();
+		lot.rearrangeCars(startState, endState);
+		fail("should raise an exception - atm raise NullPointerException");
 	}
 	
-	@Test
-	public void testRearrangeCars_inconsistentSpaceIdentifiers() {
-		fail("Not yet implemented");
-	}
 
-	
 	@Test
-	public void testGetFirstCarInWrongSpace_commonCase() {
+	public void testGetCarsInWrongSpace_commonCase() {
 		//just to test the behavior over a standard case
 		fail("Not yet implemented");
 	}
 	
 	@Test
-	public void testGetFirstCarInWrongSpace_nullStartState() {
+	public void testGetCarsInWrongSpace_nullStartState() {
 		fail("Not yet implemented");
 	}
 	
 	@Test
-	public void testGetFirstCarInWrongSpace_nullEndState() {
+	public void testGetCarsInWrongSpace_nullEndState() {
 		fail("Not yet implemented");
 	}
 	
 	@Test
-	public void testGetFirstCarInWrongSpace_emptyParkingSlot() {
+	public void testGetCarsInWrongSpace_emptyParkingSlot() {
 		fail("Not yet implemented");
 	}
 	
 	@Test
-	public void testGetFirstCarInWrongSpace_allCardsInRightSpot() {
+	public void testGetCarsInWrongSpace_allCardsInRightSpot() {
 		fail("Not yet implemented");
 	}
 
