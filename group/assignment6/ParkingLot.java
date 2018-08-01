@@ -20,20 +20,11 @@ public class ParkingLot {
     }
     
     List<Move> sequenceOfMoves = new ArrayList<>();
-    Queue<Car> carsInWrongSpace = new LinkedList<>();
-
-    for (ParkingSpace space : currentState.getAllParkingSpaces()) {
-      Car currentCar = currentState.getCarParkedInSpace(space);
-      Car expectedCar = endState.getCarParkedInSpace(space);
-      if (currentCar != null && !currentCar.equals(expectedCar)) {
-        // keep track of cars that are not parked in the right place
-        carsInWrongSpace.add(currentCar);
-      }
-    }
+    Queue<Car> carsInWrongSpace = getCarsInWrongSpaces(currentState, endState);
+    ParkingSpace emptySpaceEndState = endState.getEmptyParkingSpace();
     
     while (!carsInWrongSpace.isEmpty()) {
       ParkingSpace emptySpaceCurrentState = currentState.getEmptyParkingSpace();
-      ParkingSpace emptySpaceEndState = endState.getEmptyParkingSpace();
 
       if (emptySpaceCurrentState.equals(emptySpaceEndState)) {
         Car carInWrongSpace = carsInWrongSpace.poll();
@@ -49,10 +40,30 @@ public class ParkingLot {
         carsInWrongSpace.remove(expectedCar);
         sequenceOfMoves.add(new Move(expectedCar, positionOfExpectedCar, emptySpaceCurrentState));
         emptySpaceCurrentState = currentState.getEmptyParkingSpace();
-        emptySpaceEndState = endState.getEmptyParkingSpace();
       }
     }
     return sequenceOfMoves;
+  }
+  
+  /**
+   * Finds all the cars in the current state of the parking lot that are not parked in the space where
+   * they need to be in the final state of the parking lot.
+   *
+   * @param currentState the current configuration of the parking lot
+   * @param endState the final configuration of the parking lot
+   * @return the cars that are parked in the wrong parking space
+   */
+  private Queue<Car> getCarsInWrongSpaces(State currentState, State endState) {
+    Queue<Car> carsInWrongSpace = new LinkedList<>();
+    for (ParkingSpace space : currentState.getAllParkingSpaces()) {
+      Car currentCar = currentState.getCarParkedInSpace(space);
+      Car expectedCar = endState.getCarParkedInSpace(space);
+      if (currentCar != null && !currentCar.equals(expectedCar)) {
+        // keep track of cars that are not parked in the right place
+        carsInWrongSpace.add(currentCar);
+      }
+    }
+    return carsInWrongSpace;
   }
 
   /**
@@ -93,3 +104,4 @@ public class ParkingLot {
     }
     return sequenceOfMoves;
   }
+}
