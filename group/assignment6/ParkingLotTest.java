@@ -8,25 +8,19 @@ import org.junit.Test;
 
 public class ParkingLotTest {
 	
-	public List<Car> generate6cars() {
+	public List<Car> generateXcars(int numberOfCars) {
 		List<Car> cars = new ArrayList<Car>();
-		cars.add(new Car(1));
-		cars.add(new Car(2));
-		cars.add(new Car(3));
-		cars.add(new Car(4));
-		cars.add(new Car(5));
-		cars.add(new Car(6));
+		for (int i = 1; i<=numberOfCars ; i++) {
+			cars.add(new Car(i));
+		}
 		return cars;
 	}
 	
-	public List<ParkingSpace> generate6spaces() {
+	public List<ParkingSpace> generateXspaces(int numberOfSpaces) {
 		List<ParkingSpace> spaces = new ArrayList<ParkingSpace>();
-		spaces.add(new ParkingSpace(1));
-		spaces.add(new ParkingSpace(2));
-		spaces.add(new ParkingSpace(3));
-		spaces.add(new ParkingSpace(4));
-		spaces.add(new ParkingSpace(5));
-		spaces.add(new ParkingSpace(6));
+		for (int i = 1; i<=numberOfSpaces ; i++) {
+			spaces.add(new ParkingSpace(i));
+		}
 		return spaces;
 	}
 	
@@ -56,8 +50,8 @@ public class ParkingLotTest {
 		
 		//expected result set-up
 		List<Move> expectedResult = new ArrayList<Move>(); 
-		List<Car> cars = this.generate6cars();
-		List<ParkingSpace> spaces = this.generate6spaces();
+		List<Car> cars = this.generateXcars(3);
+		List<ParkingSpace> spaces = this.generateXspaces(4);
 		Move move1 = new Move(cars.get(1), spaces.get(1), spaces.get(2));
 		Move move2 = new Move(cars.get(0), spaces.get(0), spaces.get(1));
 		Move move3 = new Move(cars.get(2), spaces.get(3), spaces.get(0));
