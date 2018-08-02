@@ -3,6 +3,7 @@ import com.google.common.collect.BiMap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Assumptions:
@@ -61,5 +62,15 @@ public class State {
 
   public int getNumberOfParkingSpaces() {
     return numberOfParkingSpaces;
+  }
+  
+    public void addReservationsForParkingSpace(ParkingSpace space, Set<Car> reservations) {
+    if (space == null || reservations == null || !parkingLotState.containsKey(space)) {
+      throw new IllegalArgumentException();
+    }
+    Car car = getCarParkedInSpace(space);
+    space.addReservations(reservations);
+
+    parkingLotStateInverse.replace(car, space);
   }
 }
