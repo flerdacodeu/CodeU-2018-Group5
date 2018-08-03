@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.LinkedHashSet;
 
 /**
  * Assumptions : 
@@ -11,6 +13,8 @@ public class UnknownAlphabet {
 
   /**
    * Computes an alphabet that is consistent with the given dictionary.
+   *
+   * Time complexity: O(m*n)
    *
    * @param dictionary list of words in lexicographic order
    * @return one possible alphabet consistent with the dictionary or null if the dictionary is inconsistent
@@ -84,8 +88,125 @@ public class UnknownAlphabet {
   }
 
   /**
+   * Makes the given dictionary consistent.
+   *
+   * The algorithm works by detecting and removing one inconsistency(edge that creates cycle) at a
+   * time until the graph becomes acyclic. The words in the returned dictionary depend on what edge
+   * is removed first.
+   *
+   * @param dictionary the dictionary of interest
+   * @return if the original dictionary is inconsistent, a maximal subset of the original dictionary
+   * that is consistent, otherwise the original dictionary
+   */
+  public List<String> makeDictionaryConsistent(List<String> dictionary) {
+    if (dictionary == null) {
+      throw new IllegalArgumentException();
+    }
+
+    if (dictionary.isEmpty()) {
+      return dictionary;
+    }
+
+    Graph alphabetGraph = listToGraph(dictionary);
+    Graph.Result detectCycleResult = alphabetGraph.detectCycle();
+    while (detectCycleResult.hasCycle()) {
+      List<Vertex> cyclePair = detectCycleResult.getPair();
+      dictionary = removeInconsistency(cyclePair, dictionary, alphabetGraph);
+      detectCycleResult = alphabetGraph.detectCycle();
+    }
+
+    return dictionary;
+  }
+
+  /**
+   * Removes the minimum number of words from an inconsistent dictionary to make it consistent.
+   *
+   * Time complexity: O(n*m), where n is the number of words in the dictionary and m is the average length of a word.
+   *
+   * @param cyclePair the vertices that form the edge that needs to be removed
+   * @param dictionary the inconsistent dictionary of interest
+   * @param graph the graph created from the given dictionary
+   * @return a consistent dictionary that is a maximal subset of the inconsistent dictionary
+   */
+  private List<String> removeInconsistency(List<Vertex> cyclePair, List<String> dictionary, Graph graph) {
+    // the vertices that form the edge that creates the cycle
+    Vertex firstVertex = cyclePair.get(0);
+    Vertex secondVertex = cyclePair.get(1);
+    // dictionary without words imposing rule: firstVertex before secondVertex
+    List<String> firstNewDictionary = filterDictionaryWords(firstVertex, secondVertex, dictionary);
+    // dictionary without words imposing rule: secondVertex before firstVertex
+    List<String> secondNewDictionary = filterDictionaryWords(secondVertex, firstVertex, dictionary);
+
+    boolean moreWordsInFirstDictionary =  firstNewDictionary.size() > secondNewDictionary.size();
+    List<String> newDictionary = moreWordsInFirstDictionary? firstNewDictionary : secondNewDictionary;
+
+    if(moreWordsInFirstDictionary) {
+      // the constraint where the firstVertex is before secondVertex should be removed
+      graph.getVertex(firstVertex.getValue()).removeNeighbour(secondVertex);
+    } else {
+      // the constraint where the secondVertex is before firstVertex should be removed
+      graph.getVertex(secondVertex.getValue()).removeNeighbour(firstVertex);
+    }
+
+    return newDictionary;
+  }
+
+  /**
+   * Creates a new dictionary by removing the words that impose the lexicographic order of a given
+   * letter before another given letter
+   *
+   * Complexity: O(m*n^2), where n is the number of words in the dictionary, m is the average length of a word
+   * (n-1) * m + (n-2) * m + ... + 2 * m + m = m * ((n-1) + (n-2) + ... + 2 + 1) = m * (n^2)
+   *
+   * @param firstVertex vertex corresponding to first letter
+   * @param secondVertex vertex corresponding to second letter
+   * @param dictionary the dictionary of interest
+   * @return the given dictionary without the words that impose the rule where first letter is before
+   * second letter
+   */
+  private List<String> filterDictionaryWords(Vertex firstVertex, Vertex secondVertex, List<String> dictionary) {
+    Set<String> newDictionary = new LinkedHashSet<>();
+    
+    int dictionarySize = dictionary.size();
+    for (int i = 0; i < dictionarySize; i++) {
+      boolean foundFirstBeforeSecond = false;
+      String firstWord = dictionary.get(i);
+
+      for (int j = i + 1; j < dictionarySize; j++) {
+        int firstWordIndex = 0;
+        int secondWordIndex = 0;
+        String secondWord = dictionary.get(j);
+
+        while (firstWordIndex < firstWord.length() && secondWordIndex < secondWord.length() 
+               && firstWord.charAt(firstWordIndex) == secondWord.charAt(secondWordIndex)) {
+          firstWordIndex++;
+          secondWordIndex++;
+        }
+
+        if (firstWordIndex < firstWord.length() && secondWordIndex < secondWord.length()) {
+          if ((firstWord.charAt(firstWordIndex) == firstVertex.getValue() 
+               && secondWord.charAt(secondWordIndex) == secondVertex.getValue())) {
+            foundFirstBeforeSecond = true;
+            break;
+          }
+        }
+      }
+
+      if (!foundFirstBeforeSecond) {
+        newDictionary.add(firstWord);
+      }
+    }
+    return new ArrayList<>(newDictionary);
+  }
+  
+  /**
    * Creates a graph that has all the letters of the dictionary words as vertices and
    * the lexicographic order requirements as edges.
+   *
+   * Time complexity: 
+   *    addAllCharactersAsVertices: O(n*m)
+   *    extractLexicographicOrder: O(n*m)
+   *    => O(n*m), where n is the number of words in the dictionary and m is the average length of a word.
    *
    * @param dictionary the dictionary that contains the words which impose the lexicographic order.
    * @return the graph that was created from the dictionary
@@ -103,6 +224,8 @@ public class UnknownAlphabet {
   
   /**
    * Adds all distinct characters of the dictionary language to the graph.
+   *
+   * Time complexity: O(n*m), where n is the number of words in the dictionary and m is the average length of a word.
    *
    * @param graph the graph where the the distinct characters of the words in the dictionary are added as vertices
    * @param dictionary the list of words
@@ -124,11 +247,14 @@ public class UnknownAlphabet {
    *
    * The order constraints are represented as directed edges in the given graph.
    *
+   * Time complexity: O(n*m), where n is the number of words in the dictionary and m is the average length of a word.
+   *
    * @param graph the graph where the edges are added
    * @param dictionary the list of words
    */
   private void extractLexicographicOrder(Graph graph, List<String> dictionary) {
-    for (int i = 0; i < dictionary.size() - 1; i++) {
+    int dictionarySize = dictionary.size();
+    for (int i = 0; i < dictionarySize - 1; i++) {
       String currentWord = dictionary.get(i);
       String nextWord = dictionary.get(i + 1);
 

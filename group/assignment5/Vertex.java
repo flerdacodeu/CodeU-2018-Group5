@@ -39,6 +39,20 @@ public class Vertex {
       neighbours.add(vertex);
     }
   }
+  
+  /**
+   * Removes the given vertex from the neighbours of the current vertex
+   *
+   * @param vertex
+   * @throws IllegalArgumentException if the vertex to be removed is null or inexistent
+   */
+  public void removeNeighbour(Vertex vertex) {
+    if (vertex == null || !neighbours.contains(vertex)) {
+      throw new IllegalArgumentException();
+    }
+    neighbours.remove(vertex);
+  }
+
 
   public int getInbound() {
     return inbound;
