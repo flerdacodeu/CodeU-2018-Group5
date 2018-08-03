@@ -28,15 +28,15 @@ public class ParkingLot {
 
       if (emptySpaceCurrentState.equals(emptySpaceEndState)) {
         dealWithReservations(carsInWrongSpace, currentState, sequenceOfMoves);
+        // due to changes in the previous method, the position of the empty space needs to be updated
         emptySpaceCurrentState = currentState.getEmptyParkingSpace();
       }
       
       while (!emptySpaceCurrentState.equals(emptySpaceEndState)) {
         Car expectedCar = endState.getCarParkedInSpace(emptySpaceCurrentState);
         ParkingSpace positionOfExpectedCar = currentState.getParkingSpaceOfCar(expectedCar);
-        currentState.parkCarInSpace(expectedCar, emptySpaceCurrentState);
+        moveCar(expectedCar, positionOfExpectedCar, emptySpaceCurrentState, currentState, sequenceOfMoves);
         carsInWrongSpace.remove(expectedCar);
-        sequenceOfMoves.add(new Move(expectedCar, positionOfExpectedCar, emptySpaceCurrentState));
         emptySpaceCurrentState = currentState.getEmptyParkingSpace();
       }
     }
@@ -63,7 +63,15 @@ public class ParkingLot {
     }
     return carsInWrongSpace;
   }
-  
+
+  /**
+   * Moves a car into the current empty space of the parking lot; the car that is moved depends on
+   * the reservations for the current empty space.
+   *
+   * @param carsInWrongSpace cars that are not parked in the space they need to be in the final state
+   * @param currentState the current state of the parking lot
+   * @param moves the sequence of car moves needed to rearrange the cars
+   */
   private void dealWithReservations(Queue<Car> carsInWrongSpace, State currentState, List<Move> moves) {
     ParkingSpace emptySpace = currentState.getEmptyParkingSpace();
     Set<Car> reservations = emptySpace.getReservations();
@@ -71,12 +79,14 @@ public class ParkingLot {
     if (reservations.isEmpty()) {
       Car carInWrongSpace = carsInWrongSpace.poll();
       ParkingSpace carSpace = currentState.getParkingSpaceOfCar(carInWrongSpace);
-      currentState.parkCarInSpace(carInWrongSpace, emptySpace);
-      moves.add(new Move(carInWrongSpace, carSpace, emptySpace));
+      moveCar(carInWrongSpace, carSpace, emptySpace, currentState, moves);
+      return;
     }
 
-    // otherwise search for the first car in the queue that can be parked in the space of a car that
-    // belongs to the list of reservations for the current empty space;
+    // otherwise search for the first car in the queue that can be parked in the space of a car from
+    // the list of reservations for the current empty space; the car from the reservations list is
+    // moved to the empty space, the car in the queue is parked into the space of the car in the
+    // reservations list
     for (Car allowedCar : reservations) {
       ParkingSpace allowedCarSpace = currentState.getParkingSpaceOfCar(allowedCar);
       Set<Car> spaceReservations = allowedCarSpace.getReservations();
@@ -84,19 +94,17 @@ public class ParkingLot {
       for (int i = 0; i < carsInWrongSpace.size(); i++) {
         Car carInWrongSpace = carsInWrongSpace.poll();
         if (spaceReservations.isEmpty() || spaceReservations.contains(carInWrongSpace)) {
-          // move the car in the empty space reserved for it
-          currentState.parkCarInSpace(allowedCar, emptySpace);
-          moves.add(new Move(allowedCar, allowedCarSpace, emptySpace));
           ParkingSpace carSpace = currentState.getParkingSpaceOfCar(carInWrongSpace);
-          // park car currently in a wrong space in the space of the car that is allowed on the empty space
-          currentState.parkCarInSpace(carInWrongSpace, allowedCarSpace);
-          moves.add(new Move(carInWrongSpace, carSpace, allowedCarSpace));
-          break;
+          moveCar(carInWrongSpace, carSpace, allowedCarSpace, currentState, moves);
+          return;
         } else {
           carsInWrongSpace.add(carInWrongSpace);
         }
       }
-      break;
+    }
+    //if no moves have been made and if there still are cars in wrong parking spaces
+    if (!carsInWrongSpace.isEmpty()) {
+      throw new IllegalArgumentException("Invalid reservations of parking spaces: cars cannot be rearranged");
     }
   }
 
@@ -110,6 +118,7 @@ public class ParkingLot {
    * @throws IllegalArgumentException if the start state or the end state are null
    */
   public List<Move> rearrangeCarsStraightforward(State currentState, State endState) {
+    //TODO: more input validation
     if (currentState == null || endState == null) {
       throw new IllegalArgumentException();
     }
@@ -119,23 +128,32 @@ public class ParkingLot {
       Car currentCar = currentState.getCarParkedInSpace(currentSpace);
       ParkingSpace destinationSpace = endState.getParkingSpaceOfCar(currentCar);
       if (!currentSpace.equals(destinationSpace)) {
-        //if destination slot is occupied, we move car from the occupied slot to the empty one 
-        //and then move the first car to the destination slot
-        Car carInDestinationSpace = currentState.getCarParkedInSpace(destinationSpace);
-        if (carInDestinationSpace != NO_CAR) {
-          ParkingSpace emptySpace = currentState.getEmptyParkingSpace();
-          //remove car from destination slot
-          currentState.parkCarInSpace(carInDestinationSpace, emptySpace);
-          sequenceOfMoves.add(new Move(carInDestinationSpace, destinationSpace, emptySpace));
-          //move currentCar to the destination
-          currentState.parkCarInSpace(currentCar, destinationSpace);
-          sequenceOfMoves.add(new Move(currentCar, currentSpace, destinationSpace));
-        } else {
-          currentState.parkCarInSpace(currentCar, destinationSpace);
-          sequenceOfMoves.add(new Move(currentCar, currentSpace, destinationSpace));
-        }
+        moveCar(currentCar, currentSpace, destinationSpace, currentState, sequenceOfMoves);
       }
     }
     return sequenceOfMoves;
+  }
+
+  /**
+   * Moves a car from its current parking space to the specified parking space.
+   *
+   * @param car the car to be moved
+   * @param origin the current parking space of the car
+   * @param destination desired parking space of the car
+   * @param currentState the state of the parking lot
+   * @param moves sequence of moves needed to rearrange the cars
+   */
+  private void moveCar(Car car, ParkingSpace origin, ParkingSpace destination, State currentState, List<Move> moves) {
+    Car carInDestinationSpace = currentState.getCarParkedInSpace(destination);
+    if (carInDestinationSpace == NO_CAR) {
+      currentState.parkCarInSpace(car, destination);
+      moves.add(new Move(car, origin, destination));
+    } else {
+      ParkingSpace emptySpace = currentState.getEmptyParkingSpace();
+      currentState.parkCarInSpace(carInDestinationSpace, emptySpace);
+      moves.add(new Move(carInDestinationSpace, destination, emptySpace));
+      currentState.parkCarInSpace(car, destination);
+      moves.add(new Move(car, origin, destination));
+    }
   }
 }
