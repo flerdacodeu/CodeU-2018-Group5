@@ -19,8 +19,9 @@ public class State {
 
   // the elements of carsIdentifiers indicate the order in which the cars are parked in the parking spaces
   public State(List<Integer> carsIdentifiers) {
+    assert carsIdentifiers != null;
     numberOfParkingSpaces = carsIdentifiers.size();
-    parkingLotState = HashBiMap.create(carsIdentifiers.size());
+    parkingLotState = HashBiMap.create(numberOfParkingSpaces);
     int parkingSpaceIdentifier = 1;
     for (Integer carIdentifier : carsIdentifiers) {
       // the car will remain null if the current identifier is -1
@@ -28,15 +29,18 @@ public class State {
       if (carIdentifier != EMPTY) {
         car = new Car(carIdentifier);
       }
-      ParkingSpace parkingSpace = new ParkingSpace(parkingSpaceIdentifier);
+      ParkingSpace parkingSpace = new ParkingSpace(parkingSpaceIdentifier++);
       parkingLotState.put(parkingSpace, car);
-      parkingSpaceIdentifier++;
     }
     parkingLotStateInverse = parkingLotState.inverse();
   }
 
   public List<ParkingSpace> getAllParkingSpaces() {
     return new ArrayList<>(parkingLotState.keySet());
+  }
+
+  public List<Car> getAllCars() {
+    return new ArrayList<>(parkingLotStateInverse.keySet());
   }
 
   public ParkingSpace getParkingSpaceOfCar(Car car) {
@@ -64,7 +68,7 @@ public class State {
     return numberOfParkingSpaces;
   }
   
-    public void addReservationsForParkingSpace(ParkingSpace space, Set<Car> reservations) {
+  public void addReservationsForParkingSpace(ParkingSpace space, Set<Car> reservations) {
     if (space == null || reservations == null || !parkingLotState.containsKey(space)) {
       throw new IllegalArgumentException();
     }
