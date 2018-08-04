@@ -14,8 +14,7 @@ public class ParkingLot {
    * @throws IllegalArgumentException if the start state or the end state are null
    */
   public List<Move> rearrangeCars(State currentState, State endState) {
-    //TODO: more input validation
-    if (currentState == null || endState == null) {
+    if (!isValidInput(currentState, endState)) {
       throw new IllegalArgumentException();
     }
     
@@ -118,8 +117,7 @@ public class ParkingLot {
    * @throws IllegalArgumentException if the start state or the end state are null
    */
   public List<Move> rearrangeCarsStraightforward(State currentState, State endState) {
-    //TODO: more input validation
-    if (currentState == null || endState == null) {
+    if (!isValidInput(currentState, endState)) {
       throw new IllegalArgumentException();
     }
     List<Move> sequenceOfMoves = new ArrayList<>();
@@ -155,5 +153,35 @@ public class ParkingLot {
       currentState.parkCarInSpace(car, destination);
       moves.add(new Move(car, origin, destination));
     }
+  }
+
+  /**
+   * Checks the validity of the start state and end state of the parking lot.
+   *
+   * @param startState the start configuration of the parking lot
+   * @param endState the final configuration of the parking lot
+   * @return true if the states are valid, otherwise false
+   */
+  private boolean isValidInput(State startState, State endState) {
+    if (startState == null || endState == null
+        || startState.getNumberOfParkingSpaces() != endState.getNumberOfParkingSpaces()
+        || !containSameCars(startState, endState)) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Checks if the given parking lots contain the same cars.
+   *
+   * @param startState the start configuration of the parking lot
+   * @param endState the final configuration of the parking lot
+   * @return true if the parking lots contain the same cars, otherwise false
+   */
+  private boolean containSameCars(State startState, State endState) {
+    List<Car> startCars = startState.getAllCars();
+    List<Car> endCars = endState.getAllCars();
+    // the lists startCars/endCars will never contain duplicates (condition imposed by the HashBiMap)
+    return startCars.size() == endCars.size() && endCars.containsAll(startCars);
   }
 }
