@@ -1,9 +1,11 @@
-import com.google.common.collect.HashBiMap;
-import com.google.common.collect.BiMap;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.google.common.collect.Multiset.Entry;
 
 /**
  * Assumptions:
@@ -76,5 +78,35 @@ public class State {
     space.addReservations(reservations);
 
     parkingLotStateInverse.replace(car, space);
+  }
+  
+  public State copy(List<Car> parkedCars) {
+	  List<Integer> parkedCarsIdentifiers = new ArrayList<Integer>();
+	  for (Car car : parkedCars) {
+		  if (car == null) {
+			  parkedCarsIdentifiers.add(EMPTY);  
+		  }
+		  else {
+			  parkedCarsIdentifiers.add(car.getIdentifier());
+		  }
+	  }
+	  return new State(parkedCarsIdentifiers);
+	  
+  }
+  
+  
+  public void displayState() {
+	  System.out.println("I have "+this.numberOfParkingSpaces+" slots.");
+	  for(java.util.Map.Entry<ParkingSpace, Car>  entry : this.parkingLotState.entrySet()) {
+		  ParkingSpace key = entry.getKey();
+		  Car value = entry.getValue();
+		  if (value == null) {
+			  System.out.println("Slot "+key.getIdentifier()+" is empty");
+		  }
+		  else {
+			  System.out.println("Slot "+key.getIdentifier()+" = Car "+value.getIdentifier());
+		  }
+	  }
+	  System.out.println("================================================================");
   }
 }
