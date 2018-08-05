@@ -1,11 +1,9 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.google.common.collect.Multiset.Entry;
 
 /**
  * Assumptions:
@@ -36,7 +34,7 @@ public class State {
     }
     parkingLotStateInverse = parkingLotState.inverse();
   }
-
+  
   public List<ParkingSpace> getAllParkingSpaces() {
     return new ArrayList<>(parkingLotState.keySet());
   }
@@ -112,6 +110,5 @@ public class State {
 			  System.out.println("Slot "+key.getIdentifier()+" = Car "+value.getIdentifier());
 		  }
 	  }
-	  System.out.println("================================================================");
   }
 }
