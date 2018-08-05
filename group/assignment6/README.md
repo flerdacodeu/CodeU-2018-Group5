@@ -3,46 +3,28 @@
 # Requirements
 
 ## Optional Challenges
-| Criteria  | Who? | Done  |  In Progress |   Not started | Elegant? |
-|---|---|---|---|---|---|
-|  Optional challenge #1 | The anonymous alpaca |  | | X ||
-|  Optional challenge #2 | The anonymous alpaca |  | | X ||
-|  Optional challenge #3 | The anonymous alpaca |  | | X ||
-|  Optional challenge #4 | The anonymous alpaca |  | | X ||
+| Criteria  | Done  |  In Progress |   Not started | Elegant? |
+|---|---|---|---|
+|  Optional challenge #1 |  X | | |
+|  Optional challenge #2 | X | | |
+|  Optional challenge #3 | X  | |  |
+|  Optional challenge #4 | X  | |  |
 
 
 ## Testing
-| Criteria  | Who? | Done  |  In Progress |   Not started | 
-|---|---|---|---|---|
-|  Does the solution provide test cases? | The anonymous alpaca |  | | X |
-|  Are all cases covered? | The anonymous alpaca |  | | X |
-|  Do tests include input validation? | The anonymous alpaca |  | | X |
-|  Do tests check that the results are correct? | The anonymous alpaca |  | | X |
+| Criteria  |  Done  |  In Progress |   Not started | 
+|---|---|---|---|
+|  Does the solution provide test cases? |  X | |  |
+|  Are all cases covered? |   X| |  |
+|  Do tests include input validation? | X | |  |
+|  Do tests check that the results are correct? | X  | |  |
 
 
 ## Following the style-guide
-| Criteria  | Who? | Done  |  In Progress |   Not started | 
-|---|---|---|---|---|
-|  How well does the solution adhere to the style guide? | The anonymous alpaca |  | | X |
-|  Does the solution use the correct language coding conventions? | The anonymous alpaca |  | | X |
-
-
-## Code health
-| Criteria  | Who? | Done  |  In Progress |   Not started | 
-|---|---|---|---|---|
-|  How well is the code structured? | The anonymous alpaca |  | | X |
-|  Is the code readable? | The anonymous alpaca |  | | X |
-|  Is it divided into several parts each with a single responsibility? | The anonymous alpaca |  | | X |
-|  How is the naming of functions and variables? | The anonymous alpaca |  | | X |
-|  How easy is the code to reuse in a larger project? | The anonymous alpaca |  | | X |
-
-
-## Group Code review
-| Criteria  | Who? | Done  |  In Progress |   Not started | 
-|---|---|---|---|---|
-|  How many group members participated in creating a group solution? | The anonymous alpaca |  | | X |
-|  How much value did the group member's reviews add to the final solution? | The anonymous alpaca |  | | X |
-
+| Criteria   Done  |  In Progress |   Not started | 
+|---|---|---|---|
+|  How well does the solution adhere to the style guide? |X  | |  |
+|  Does the solution use the correct language coding conventions? | X | | X |
 
 
 # Useful links
