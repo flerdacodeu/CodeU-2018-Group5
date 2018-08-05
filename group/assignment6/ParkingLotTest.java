@@ -25,19 +25,6 @@ public class ParkingLotTest {
 	}
 	
 
-	@Test
-	public void testRearrangeCars_emptyParkingSlot() {
-		//TODO-should raise an exception if no car in the parking slot?
-		State startState = new State(Arrays.asList(-1,-1,-1,-1));
-		State endState = new State(Arrays.asList(-1,-1,-1,-1));
-		ParkingLot lot = new ParkingLot();
-		List<Move> actualResult = lot.rearrangeCars(startState, endState);
-		List<Move> expectedResult = new ArrayList<Move>(); 
-		assertEquals(expectedResult, actualResult);
-	}
-	
-	
-	
 	@Test(expected=IllegalArgumentException.class)
 	public void testRearrangeCars_nullStartState() {
 		State startState = null;
