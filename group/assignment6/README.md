@@ -24,12 +24,12 @@
 | Criteria  | Done  |  In Progress |   Not started | 
 |---|---|---|---|
 |  How well does the solution adhere to the style guide? |X  | |  |
-|  Does the solution use the correct language coding conventions? | X | | X |
+|  Does the solution use the correct language coding conventions? | X | |  |
 
 
 # Useful links
 
-- **Design doc**
+- **Design doc** https://docs.google.com/document/d/1vmBp7ZkJAiVAxrCmlbfCpJRcmaE_bvIg7XJ8PXaKjVM/edit?usp=sharing
 
 - **Java style guide** available @ https://google.github.io/styleguide/javaguide.html 
 
