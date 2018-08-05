@@ -3,7 +3,7 @@
 # Requirements
 
 ## Optional Challenges
-| Criteria  | Done  |  In Progress |   Not started | Elegant? |
+| Criteria  | Done  |  In Progress |   Not started | 
 |---|---|---|---|
 |  Optional challenge #1 |  X | | |
 |  Optional challenge #2 | X | | |
@@ -21,7 +21,7 @@
 
 
 ## Following the style-guide
-| Criteria   Done  |  In Progress |   Not started | 
+| Criteria  | Done  |  In Progress |   Not started | 
 |---|---|---|---|
 |  How well does the solution adhere to the style guide? |X  | |  |
 |  Does the solution use the correct language coding conventions? | X | | X |
