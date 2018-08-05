@@ -136,43 +136,62 @@ public class ParkingLot {
 		return sequenceOfMoves;
 	}
 
-	//TODO - add doc and remove debug mode
+	/**
+	 * Compute all the possible sequence of moves that lead from the start to the end state without
+	 * ever repeating the same state more than once.
+	 * 
+	 * @param startState the initial state of the parking space
+	 * @param endState the final state of the parking space
+	 * @return all the possible sequence of moves as a list
+	 * @throws IllegalArgumentException if the start state or the end state are null
+	 */
 	public List<List<Move>> computeAllPossibleSequences(State startState, State endState) {
-		//input validation
+		if (!isValidInput(startState, endState)) {
+			throw new IllegalArgumentException();
+		}
+
 		List<Car> allCars = startState.getAllCars();
 		List<List<Move>> allPossibleSequences = new ArrayList<List<Move>>();
-		State start = startState.copy(allCars);
-		//if it is not good already
-		for (Car car : allCars) {
-			if (car != null) {
-				System.out.println("=================START=================");
-				List<Move> moves = new ArrayList<Move>();
-				allPossibleSequences.add(this.arrangeWithoutDuplicate(car, startState, endState, allCars, moves));
+		State start = startState.copy(allCars); // save the state which will be modified in place in the algorithm
+		Queue<Car> carsInWrongSpaces = this.getCarsInWrongSpaces(startState, endState);
+		
+		if (!carsInWrongSpaces.isEmpty()) {
+			for (Car car : allCars) {
+				if (car != null) {
+					List<Move> moves = new ArrayList<Move>();
+					allPossibleSequences.add(this.arrangeWithoutDuplicate(car, startState, endState, allCars, moves));
+				}
+				startState = start;
 			}
-			startState = start;
 		}
 		return allPossibleSequences;
 	}
 
 	/**
 	 * Compute a sequence of moves to reach the end state. 
-	 * Makes sure the last moved car is not put back in its prev. position
+	 * Makes sure the last moved car is not put back in its previous position
+	 * 
 	 * @param car the car to be moved
 	 * @param currentState the current state of the parking space
 	 * @param endState
 	 * @return the sequence of moves
+	 * @throws IllegalArgumentException if the start state or the end state are null
 	 */
 	public List<Move> arrangeWithoutDuplicate(Car movedCar, State currentState, State endState, List<Car> allCars, List<Move> moves) {
-		currentState.displayState();
-		Queue<Car> wrongParked = this.getCarsInWrongSpaces(currentState, endState);
-		if (wrongParked.isEmpty()) {
-			return moves;
+		if (!isValidInput(currentState, endState)) {
+			throw new IllegalArgumentException();
 		}
 
-		this.moveCar(movedCar, currentState.getParkingSpaceOfCar(movedCar), currentState.getEmptyParkingSpace(), currentState, moves);
-		for (Car car : allCars) {
-			if (car !=null && !car.equals(movedCar)) {
-				this.arrangeWithoutDuplicate(car, currentState, endState, allCars, moves);
+		Queue<Car> carsInWrongSpaces = this.getCarsInWrongSpaces(currentState, endState);
+		if (carsInWrongSpaces.isEmpty()) {
+			return moves;
+		}
+		else {
+			this.moveCar(movedCar, currentState.getParkingSpaceOfCar(movedCar), currentState.getEmptyParkingSpace(), currentState, moves);
+			for (Car car : allCars) {
+				if (car !=null && !car.equals(movedCar)) {
+					this.arrangeWithoutDuplicate(car, currentState, endState, allCars, moves);
+				}
 			}
 		}
 		return moves;
