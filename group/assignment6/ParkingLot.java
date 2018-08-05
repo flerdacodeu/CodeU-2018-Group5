@@ -136,7 +136,7 @@ public class ParkingLot {
 		return sequenceOfMoves;
 	}
 
-
+	//TODO - add doc and remove debug mode
 	public List<List<Move>> computeAllPossibleSequences(State startState, State endState) {
 		//input validation
 		List<Car> allCars = startState.getAllCars();
@@ -155,11 +155,12 @@ public class ParkingLot {
 	}
 
 	/**
-	 * 
+	 * Compute a sequence of moves to reach the end state. 
+	 * Makes sure the last moved car is not put back in its prev. position
 	 * @param car the car to be moved
-	 * @param startState
+	 * @param currentState the current state of the parking space
 	 * @param endState
-	 * @return
+	 * @return the sequence of moves
 	 */
 	public List<Move> arrangeWithoutDuplicate(Car movedCar, State currentState, State endState, List<Car> allCars, List<Move> moves) {
 		currentState.displayState();

@@ -80,6 +80,11 @@ public class State {
     parkingLotStateInverse.replace(car, space);
   }
   
+  /**
+   * copy a State instance from a list of cars
+   * @param parkedCars - the cars and their position in the copied state
+   * @return a state instance based on the list of cars
+   */
   public State copy(List<Car> parkedCars) {
 	  List<Integer> parkedCarsIdentifiers = new ArrayList<Integer>();
 	  for (Car car : parkedCars) {
