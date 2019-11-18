@@ -1,0 +1,146 @@
+
+/* TASK 1 */
+
+/* I will put the solution to the forst problem in the anagram class */
+
+
+/* For this problem I solved just the case where my words  contained
+just alpha-numeric letters, in small cases  */
+
+public class Anagram {
+    
+    char[] caractere = new char[10];
+    int norm = 96;
+    public  boolean solve(char[] a, char[] b){
+        if (a.length != b.length)
+            return false;
+        
+        /* initalize with number of letters in alphabet + 1  */
+        int[] v1 = new int[27]; 
+        int[] v2 = new int[27]; 
+   
+        /*  will be considers just the lower case letters, that in ascii code
+            are from 97 to 122 (a-z)*/
+        for (int i = 0; i < a.length; i++)
+            v1[a[i] - norm]++;
+        
+        for (int i = 0; i <  b.length; i++)
+            v2[b[i] - norm]++;
+        
+        boolean flag = true;
+        
+        for(int i = 0; i < 27; i++)
+            if (v1[i] != v2[i]){
+                flag = false;
+                break;
+            }
+                    
+        return flag;
+    }
+    
+    
+    /* I also included the main method to see how this program would run*/
+    public static void main(String[] args){
+        String s = "apple";
+        String t = "pabble";
+        char[] s1 = s.toCharArray();
+        char[] s2 =t.toCharArray();
+
+        
+        if (new Anagram().solve(s1,s2))
+            System.out.println("Anagram");
+        else
+            System.out.println("Non Anagram");
+
+    }
+}
+
+/*  TASK 2 */
+
+/* For the second task I created my list class, and then, in a separate class I solved the task*/
+
+class Node{
+        int value;
+        Node next = null;
+        
+        public Node(int n){
+            value = n;
+        }
+    }
+
+public class List {
+    
+    public Node head;
+
+        public List(){
+		head = null;
+	}
+
+	public void show(){
+		Node p = head;
+		while(p.next!=null){
+			System.out.print(p.value + " ");
+			p = p.next;
+		}
+		System.out.println(p.value);
+	}
+
+        public void add(int d){
+            if (head == null){
+                head = new Node(d);
+            } else{
+                Node end = new Node(d);
+                Node p = head;
+
+                while(p.next != null){
+                        p = p.next;
+                }
+                p.next = end;
+            }
+        }
+     
+}
+
+public class Solution {
+  
+    public void solve(int k, List l){
+      
+        /* I start by reverting the list */
+        Node prev = null;
+        Node p = l.head;
+        Node next = null;
+        while (p != null) {
+            next = p.next;
+            p.next = prev;
+            prev = p;
+            p = next;
+        }
+        l.head = prev;
+        
+        /* I itterate through the now reverted list to find my element */
+        p = l.head;
+        while (p.next != null){
+            if (k == 0)
+                System.out.println(p.value);
+            k--;
+            p = p.next;
+        }
+        if (k == 0)
+            System.out.println(p.value);
+        if (k > 0)
+            System.out.println("Enter a valid number");
+        
+    }
+    
+    public static void main(String[] args){
+        int v[] = {1,2,3,4,5,6};
+        List obj = new List();
+        
+        for(int i = 0; i<6; i++)
+            obj.add(v[i]);
+        
+        new Solution().solve(2, obj);
+    }
+}
+
+
